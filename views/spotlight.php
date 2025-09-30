@@ -1,47 +1,96 @@
-<?php
-require_once __DIR__ . '/../src/Models/Artist.php';
-require_once __DIR__ . '/../src/Models/Song.php';
-
-// Placeholder pour l'artiste de la semaine
-$artist = new Artist('Nekfeu', 'Rappeur talentueux du rap français.', 'assets/nekfeu.jpg');
-$songs = [
-    new Song('On Verra'),
-    new Song('Ma Dope'),
-    new Song('Reuf'),
-];
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>WAVE - Spotlight</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>WAVE - Spotlight</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-    <nav>
-        <a href="index.php?p=home">Accueil</a>
-        <a href="index.php?p=spotlight">Spotlight</a>
-        <a href="index.php?p=find_name">Sondages</a>
-        <a href="index.php?p=top10">Top 10</a>
-        <a href="index.php?p=calendar">Concerts</a>
-        <a href="index.php?p=chipies">Les Chipies</a>
-        <a href="index.php?p=login">Admin</a>
-    </nav>
+
+<!-- Navigation -->
+<nav>
+    <div class="logo">WAVE</div>
+    <div class="nav-links">
+        <a href="?p=home">Accueil</a>
+        <a href="?p=spotlight" class="active">Spotlight</a>
+        <a href="?p=top10">Top 10</a>
+        <a href="?p=calendar">Concerts</a>
+        <a href="?p=chipies">Les Chipies</a>
+        <a href="?p=login">Admin</a>
+    </div>
+</nav>
+
+<!-- Spotlight header -->
+<header class="hero">
+    <h1>🎤 Spotlight</h1>
+    <p>Découvrez l’artiste de la semaine</p>
 </header>
 
 <main>
-    <section class="spotlight">
-        <h1>Artiste de la semaine : <?= $artist->name ?></h1>
-        <img src="<?= $artist->image ?>" alt="<?= $artist->name ?>" width="250">
-        <p><?= $artist->bio ?></p>
-        <h2>Meilleurs sons :</h2>
-        <ul>
-            <?php foreach($songs as $song): ?>
-                <li><?= $song->title ?></li>
-            <?php endforeach; ?>
-        </ul>
+    <!-- Bloc artiste -->
+    <section class="block">
+        <h2>Artiste en avant</h2>
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-img"></div>
+                <h3>Nom de l’artiste</h3>
+                <p>Biographie courte ici (remplaçable par la BDD).</p>
+                <a href="#" class="btn">Écouter maintenant</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloc top chansons -->
+    <section class="block">
+        <h2>🔥 Top chansons</h2>
+        <div class="list">
+            <ul>
+                <li>1. Chanson 1</li>
+                <li>2. Chanson 2</li>
+                <li>3. Chanson 3</li>
+                <li>4. Chanson 4</li>
+                <li>5. Chanson 5</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Bloc actualités -->
+    <section class="block">
+        <h2>📰 Dernières actualités</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Article 1</h3>
+                <p>Petit extrait de l’actualité de l’artiste.</p>
+                <a href="#" class="btn">Lire</a>
+            </div>
+            <div class="card">
+                <h3>Article 2</h3>
+                <p>Petit extrait de l’actualité de l’artiste.</p>
+                <a href="#" class="btn">Lire</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bloc concerts -->
+    <section class="block">
+        <h2>🎶 Concerts à venir</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>Ville A</h3>
+                <p>Date – Lieu</p>
+            </div>
+            <div class="card">
+                <h3>Ville B</h3>
+                <p>Date – Lieu</p>
+            </div>
+        </div>
     </section>
 </main>
+
+<!-- Footer -->
+<footer>
+    &copy; 2025 WAVE - Tous droits réservés
+</footer>
+
 </body>
 </html>
