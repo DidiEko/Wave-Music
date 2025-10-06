@@ -7,12 +7,12 @@
 </head>
 <body>
 
-<!-- Navigation -->
+<!-- Navigation principale -->
 <nav>
     <div class="logo">WAVE</div>
     <div class="nav-links">
         <a href="?p=home">Accueil</a>
-        <a href="?p=spotlight" class="active">Spotlight</a>
+        <a href="?p=spotlight" class="active">Spotlight</a> <!-- Page active -->
         <a href="?p=top10">Top 10</a>
         <a href="?p=calendar">Concerts</a>
         <a href="?p=chipies">Les Chipies</a>
@@ -20,27 +20,27 @@
     </div>
 </nav>
 
-<!-- Spotlight header -->
+<!-- En-tête Spotlight -->
 <header class="hero">
     <h1>🎤 Spotlight</h1>
     <p>Découvrez l’artiste de la semaine</p>
 </header>
 
 <main>
-    <!-- Bloc artiste -->
+    <!-- Bloc Artiste en avant -->
     <section class="block">
         <h2>Artiste en avant</h2>
         <div class="card-grid">
             <div class="card">
-                <div class="card-img"></div>
+                <div class="card-img"></div> <!-- Image de l'artiste -->
                 <h3>Nom de l’artiste</h3>
                 <p>Biographie courte ici (remplaçable par la BDD).</p>
-                <a href="#" class="btn">Écouter maintenant</a>
+                <a href="#" class="btn">Écouter maintenant</a> <!-- Lien vers musique / streaming -->
             </div>
         </div>
     </section>
 
-    <!-- Bloc top chansons -->
+    <!-- Bloc Top chansons -->
     <section class="block">
         <h2>🔥 Top chansons</h2>
         <div class="list">
@@ -54,7 +54,7 @@
         </div>
     </section>
 
-    <!-- Bloc actualités -->
+    <!-- Bloc Actualités de l'artiste -->
     <section class="block">
         <h2>📰 Dernières actualités</h2>
         <div class="card-grid">
@@ -71,13 +71,13 @@
         </div>
     </section>
 
-    <!-- Bloc concerts -->
+    <!-- Bloc Concerts à venir -->
     <section class="block">
         <h2>🎶 Concerts à venir</h2>
         <div class="card-grid">
             <div class="card">
                 <h3>Ville A</h3>
-                <p>Date – Lieu</p>
+                <p>Date – Lieu</p> <!-- Informations du concert -->
             </div>
             <div class="card">
                 <h3>Ville B</h3>
@@ -87,7 +87,7 @@
     </section>
 </main>
 
-<!-- Footer -->
+<!-- Pied de page -->
 <footer>
     &copy; 2025 WAVE - Tous droits réservés
 </footer>

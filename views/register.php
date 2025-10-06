@@ -1,40 +1,53 @@
 <?php
-// register.php
+// register.php : page d'inscription
+
+// Démarre la session si elle n'existe pas déjà
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+// Inclut le fichier de configuration (connexion PDO)
 require_once __DIR__ . '/../src/config.php';
 
+// Variables pour stocker les messages
 $success = '';
 $error = '';
 
+// Vérifie si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    // Récupère et nettoie les données du formulaire
+    $username = trim($_POST['username']); // Supprime les espaces superflus
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
+    // Vérification des champs
     if (empty($username) || empty($password) || empty($password_confirm)) {
-        $error = "Veuillez remplir tous les champs.";
+        $error = "Veuillez remplir tous les champs."; // Tous les champs doivent être remplis
     } elseif ($password !== $password_confirm) {
-        $error = "Les mots de passe ne correspondent pas.";
+        $error = "Les mots de passe ne correspondent pas."; // Les mots de passe doivent correspondre
     } else {
         try {
+            // Vérifie si le nom d'utilisateur existe déjà
             $stmt = $db->prepare("SELECT id FROM users WHERE username = :username LIMIT 1");
             $stmt->bindValue(':username', $username, PDO::PARAM_STR);
             $stmt->execute();
+            
             if ($stmt->fetch()) {
-                $error = "Ce nom d'utilisateur existe déjà.";
+                $error = "Ce nom d'utilisateur existe déjà."; // Nom d'utilisateur déjà pris
             } else {
+                // Hash du mot de passe pour sécuriser le stockage
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+                // Insertion du nouvel utilisateur dans la base de données
                 $stmt = $db->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
                 $stmt->bindValue(':username', $username, PDO::PARAM_STR);
                 $stmt->bindValue(':password', $passwordHash, PDO::PARAM_STR);
                 $stmt->execute();
 
-                $success = "Compte créé avec succès. Vous pouvez maintenant vous connecter.";
+                $success = "Compte créé avec succès. Vous pouvez maintenant vous connecter."; // Message de succès
             }
         } catch (PDOException $e) {
-            $error = "Erreur serveur, réessayez plus tard.";
+            $error = "Erreur serveur, réessayez plus tard."; // Erreur PDO
         }
     }
 }
@@ -46,6 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Wave Music</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Styles spécifiques à la page d'inscription -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -129,9 +144,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
+<!-- Conteneur principal du formulaire d'inscription -->
 <div class="register-container">
     <h2>Créer un compte</h2>
 
+    <!-- Affiche les messages d'erreur ou de succès -->
     <?php if ($error): ?>
         <div class="message error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
@@ -139,6 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="message success"><?= htmlspecialchars($success) ?></div>
     <?php endif; ?>
 
+    <!-- Formulaire d'inscription -->
     <form action="register.php" method="post">
         <div class="form-group">
             <label for="username">Nom d’utilisateur</label>
@@ -155,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button type="submit" class="btn">S’inscrire</button>
     </form>
 
+    <!-- Lien vers la page de connexion -->
     <a href="login.php" class="register-link">Déjà un compte ? Connectez-vous</a>
 </div>
 

@@ -6,9 +6,12 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+// Inclut le fichier de configuration (connexion à la base de données, constantes, etc.)
 require_once __DIR__ . '/../src/config.php';
 
+// Récupère le message d'erreur de connexion s'il existe dans la session
 $error = $_SESSION['login_error'] ?? '';
+// Supprime l'erreur de la session pour qu'elle ne s'affiche qu'une seule fois
 unset($_SESSION['login_error']);
 ?>
 <!DOCTYPE html>
@@ -17,12 +20,16 @@ unset($_SESSION['login_error']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion - Wave Music</title>
+
+    <!-- Lien vers le CSS principal -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- Styles spécifiques à la page de login -->
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Fond dégradé */
             height: 100vh;
             display: flex;
             align-items: center;
@@ -30,10 +37,10 @@ unset($_SESSION['login_error']);
             color: #333;
         }
         .login-container {
-            background: #fff;
+            background: #fff; /* Fond blanc du formulaire */
             padding: 40px 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2); /* Ombre pour effet 3D */
             max-width: 400px;
             width: 100%;
             text-align: center;
@@ -64,7 +71,7 @@ unset($_SESSION['login_error']);
             transition: border-color 0.2s;
         }
         .form-group input:focus {
-            border-color: #2c5364;
+            border-color: #2c5364; /* Changement de couleur au focus */
         }
         .btn {
             width: 100%;
@@ -79,7 +86,7 @@ unset($_SESSION['login_error']);
             transition: background 0.3s;
         }
         .btn:hover {
-            background: #1a2e35;
+            background: #1a2e35; /* Couleur au survol */
         }
         .message {
             padding: 10px;
@@ -88,8 +95,8 @@ unset($_SESSION['login_error']);
             margin-bottom: 15px;
         }
         .error {
-            background: #ffeaea;
-            color: #d63031;
+            background: #ffeaea; /* Fond rouge clair pour les erreurs */
+            color: #d63031;       /* Texte rouge */
             border: 1px solid #fab1a0;
         }
         .register-link {
@@ -107,13 +114,16 @@ unset($_SESSION['login_error']);
 </head>
 <body>
 
+    <!-- Conteneur principal du formulaire de connexion -->
     <div class="login-container">
         <h2>Connexion</h2>
 
+        <!-- Affiche le message d'erreur si une connexion a échoué -->
         <?php if ($error): ?>
             <div class="message error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
+        <!-- Formulaire de connexion -->
         <form action="process_login.php" method="post">
             <div class="form-group">
                 <label for="username">Nom d’utilisateur</label>
@@ -126,6 +136,7 @@ unset($_SESSION['login_error']);
             <button type="submit" class="btn">Se connecter</button>
         </form>
 
+        <!-- Lien vers la page d'inscription -->
         <a href="register.php" class="register-link">Créer un nouveau compte</a>
     </div>
 

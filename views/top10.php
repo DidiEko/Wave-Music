@@ -1,4 +1,3 @@
-```php
 <?php
 // top10.php
 // Plus tard : remplacer ce tableau par une requête SQL SELECT LIMIT 10
@@ -23,7 +22,7 @@ $topItems = [
     <title>Top 10 - Wave Music</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Section Top 10 */
+        /* Styles pour la section Top 10 */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -36,6 +35,7 @@ $topItems = [
             background: #f9f9f9;
         }
 
+        /* Titre de la section */
         .section-title {
             text-align: center;
             font-size: 2rem;
@@ -44,6 +44,7 @@ $topItems = [
             color: #222;
         }
 
+        /* Grille des cartes Top 10 */
         .top10-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -52,6 +53,7 @@ $topItems = [
             margin: 0 auto;
         }
 
+        /* Carte individuelle */
         .top10-card {
             background: #fff;
             border-radius: 12px;
@@ -61,10 +63,12 @@ $topItems = [
             transition: transform 0.2s ease;
         }
 
+        /* Effet hover sur la carte */
         .top10-card:hover {
             transform: translateY(-5px);
         }
 
+        /* Numéro de classement */
         .rank {
             position: absolute;
             top: 10px;
@@ -77,12 +81,14 @@ $topItems = [
             font-size: 0.9rem;
         }
 
+        /* Image de la carte */
         .top10-img {
             width: 100%;
             height: 300px;
             object-fit: cover;
         }
 
+        /* Informations sous l'image */
         .top10-info {
             padding: 15px;
             text-align: center;
@@ -94,6 +100,7 @@ $topItems = [
             color: #333;
         }
 
+        /* Note / rating */
         .rating {
             display: inline-block;
             background: #ffeaa7;
@@ -106,14 +113,19 @@ $topItems = [
 </head>
 <body>
 
+    <!-- Section Top 10 -->
     <section class="top10-section">
         <div class="container">
             <h2 class="section-title">Top 10 du moment</h2>
             <div class="top10-grid">
                 <?php foreach ($topItems as $index => $item): ?>
+                    <!-- Carte Top 10 individuelle -->
                     <div class="top10-card">
+                        <!-- Affiche le rang -->
                         <div class="rank">#<?= $index + 1 ?></div>
+                        <!-- Image du film / musique -->
                         <img src="<?= $item['image'] ?>" alt="<?= htmlspecialchars($item['title']) ?>" class="top10-img">
+                        <!-- Informations (titre + note) -->
                         <div class="top10-info">
                             <h3 class="top10-title"><?= htmlspecialchars($item['title']) ?></h3>
                             <span class="rating">⭐ <?= $item['rating'] ?></span>
@@ -126,4 +138,3 @@ $topItems = [
 
 </body>
 </html>
-```
