@@ -1,21 +1,18 @@
 <?php
-// Démarre une session PHP ou récupère la session existante
+// public/index.php
+// Point d'entrée principal du site
+
+// Démarre la session pour vérifier le statut de connexion
 session_start();
 
-// Inclut le fichier de configuration principal du projet
-require_once __DIR__ . '/../src/config.php';
-
-// Inclut le fichier contenant la classe Router pour gérer les routes
-require_once __DIR__ . '/../src/Router.php';
-
-// Récupère la page demandée dans l'URL via le paramètre 'p'
-// Si aucune page n'est spécifiée, la page par défaut sera 'home'
-$page = $_GET['p'] ?? 'home';
-
-// Crée une instance de la classe Router
-$router = new Router();
-
-// Appelle la méthode route() du routeur pour afficher la page demandée
-$router->route($page);
-
-//coucou
+// Vérifie si l'utilisateur est déjà connecté (si la variable de session 'user_id' existe)
+if (isset($_SESSION['user_id'])) {
+    // Si oui, redirige vers la page d'accueil principale
+    header('Location: home.php');
+    exit;
+} else {
+    // Si non (visiteur), redirige vers la page de connexion
+    header('Location: login.php');
+    exit;
+}
+?>
