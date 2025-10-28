@@ -17,3 +17,5 @@ $router = new Router();
 
 // Appelle la méthode route() du routeur pour afficher la page demandée
 $router->route($page);
+
+//coucou
