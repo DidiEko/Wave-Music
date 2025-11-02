@@ -37,7 +37,7 @@ if (!isset($_SESSION['user_id'])) {
     </section>
 
     <section class="block">
-        <h2>🔥 Top chansons</h2>
+        <h2>Nos 5 songs préférés de Gims</h2>
         <div class="list">
             <ul>
                 <li>1. Chanson 1</li>

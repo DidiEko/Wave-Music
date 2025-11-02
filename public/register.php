@@ -1,57 +1,70 @@
 <?php
 // public/register.php
-// Page 2-en-1 : Affiche le formulaire d'inscription ET traite la soumission
-
 session_start();
 
-// --- SÉCURITÉ 1 : Rediriger si déjà connecté ---
+// Redirection si déjà connecté
 if (isset($_SESSION['user_id'])) {
     header('Location: home.php');
     exit;
 }
 
-// --- LOGIQUE DE TRAITEMENT ---
-
-// 1. Inclut la configuration de la base de données
 require_once __DIR__ . '/../src/config.php';
 
-$success = '';
-$error = '';
+$message = '';
+$messageType = '';
 
-// 2. Vérifie si le formulaire a été soumis
+// Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
-    $password_confirm = $_POST['password_confirm'];
+    // Récupération et nettoyage des données
+    $data = [
+        'username' => trim($_POST['username']),
+        'nom' => trim($_POST['nom']),
+        'prenom' => trim($_POST['prenom']),
+        'email' => trim($_POST['email']),
+        'password' => $_POST['password'],
+        'password_confirm' => $_POST['password_confirm']
+    ];
 
-    // 3. Vérifications
-    if (empty($username) || empty($password) || empty($password_confirm)) {
-        $error = "Veuillez remplir tous les champs.";
-    } elseif ($password !== $password_confirm) {
-        $error = "Les mots de passe ne correspondent pas.";
-    } else {
+    // Validation
+    if (empty($data['username']) || empty($data['nom']) || empty($data['prenom']) || 
+        empty($data['email']) || empty($data['password']) || empty($data['password_confirm'])) {
+        $message = "Tous les champs sont obligatoires.";
+        $messageType = 'error';
+    } 
+    elseif (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+        $message = "Email invalide.";
+        $messageType = 'error';
+    } 
+    elseif ($data['password'] !== $data['password_confirm']) {
+        $message = "Les mots de passe ne correspondent pas.";
+        $messageType = 'error';
+    } 
+    else {
         try {
-            // 4. Vérifie si l'utilisateur existe déjà (table 'admins')
-            $stmt = $db->prepare("SELECT id FROM admins WHERE username = :username LIMIT 1");
-            $stmt->bindValue(':username', $username, PDO::PARAM_STR);
-            $stmt->execute();
+            // Vérifier si username ou email existe
+            $stmt = $db->prepare("SELECT id FROM admins WHERE username = ? OR email = ?");
+            $stmt->execute([$data['username'], $data['email']]);
             
             if ($stmt->fetch()) {
-                $error = "Ce nom d'utilisateur existe déjà.";
+                $message = "Nom d'utilisateur ou email déjà utilisé.";
+                $messageType = 'error';
             } else {
-                // 5. Hash du mot de passe (TRÈS IMPORTANT)
-                $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-
-                // 6. Insertion dans la BDD (table 'admins')
-                $stmt = $db->prepare("INSERT INTO admins (username, password) VALUES (:username, :password)");
-                $stmt->bindValue(':username', $username, PDO::PARAM_STR);
-                $stmt->bindValue(':password', $passwordHash, PDO::PARAM_STR);
-                $stmt->execute();
-
-                $success = "Compte créé avec succès. Vous pouvez maintenant vous connecter.";
+                // Créer le compte
+                $stmt = $db->prepare("INSERT INTO admins (username, nom, prenom, email, password) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([
+                    $data['username'],
+                    $data['nom'],
+                    $data['prenom'],
+                    $data['email'],
+                    password_hash($data['password'], PASSWORD_DEFAULT)
+                ]);
+                
+                $message = "Compte créé ! Vous pouvez vous connecter.";
+                $messageType = 'success';
             }
         } catch (PDOException $e) {
-            $error = "Erreur serveur, réessayez plus tard.";
+            $message = "Erreur serveur.";
+            $messageType = 'error';
         }
     }
 }
@@ -62,50 +75,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - Wave Music</title>
-    <link rel="stylesheet" href="style.css"> <style>
-        body { font-family: Arial, sans-serif; margin: 0; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); height: 100vh; display: flex; align-items: center; justify-content: center; color: #333; }
-        .register-container { background: #fff; padding: 40px 30px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); max-width: 400px; width: 100%; text-align: center; }
-        .register-container h2 { margin-bottom: 20px; font-size: 1.8rem; color: #203a43; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { font-size: 0.9rem; display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none; transition: border-color 0.2s; }
-        .form-group input:focus { border-color: #2c5364; }
-        .btn { width: 100%; padding: 12px; background: #2c5364; border: none; border-radius: 8px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s; }
-        .btn:hover { background: #1a2e35; }
-        .message { padding: 10px; border-radius: 6px; font-size: 0.9rem; margin-bottom: 15px; }
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); width: 100%; max-width: 400px; }
+        h2 { margin-bottom: 25px; color: #203a43; text-align: center; }
+        .message { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; }
         .error { background: #ffeaea; color: #d63031; border: 1px solid #fab1a0; }
         .success { background: #e0f7ea; color: #2d7a46; border: 1px solid #b7e4c7; }
-        .register-link { margin-top: 15px; display: block; font-size: 0.9rem; color: #2c5364; text-decoration: none; transition: color 0.2s; }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
+        input:focus { outline: none; border-color: #2c5364; }
+        button { width: 100%; padding: 12px; background: #2c5364; border: none; border-radius: 8px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; }
+        button:hover { background: #1a2e35; }
+        .link { text-align: center; margin-top: 15px; }
+        .link a { color: #2c5364; text-decoration: none; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-<div class="register-container">
+<div class="container">
     <h2>Créer un compte</h2>
 
-    <?php if ($error): ?>
-        <div class="message error"><?= htmlspecialchars($error) ?></div>
-    <?php endif; ?>
-    <?php if ($success): ?>
-        <div class="message success"><?= htmlspecialchars($success) ?></div>
+    <?php if ($message): ?>
+        <div class="message <?= $messageType ?>"><?= htmlspecialchars($message) ?></div>
     <?php endif; ?>
 
-    <form action="register.php" method="post">
-        <div class="form-group">
-            <label for="username">Nom d’utilisateur</label>
-            <input type="text" id="username" name="username" placeholder="Votre nom..." required>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" placeholder="Votre mot de passe..." required>
-        </div>
-        <div class="form-group">
-            <label for="password_confirm">Confirmer le mot de passe</label>
-            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirmez..." required>
-        </div>
-        <button type="submit" class="btn">S’inscrire</button>
+    <form method="post">
+        <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+        <input type="text" name="nom" placeholder="Nom de famille" required>
+        <input type="text" name="prenom" placeholder="Prénom" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+        <input type="password" name="password_confirm" placeholder="Confirmer le mot de passe" required>
+        <button type="submit">S'inscrire</button>
     </form>
     
-    <a href="login.php" class="register-link">Déjà un compte ? Connectez-vous</a>
+    <div class="link">
+        <a href="login.php">Déjà un compte ? Connectez-vous</a>
+    </div>
 </div>
 </body>
 </html>
