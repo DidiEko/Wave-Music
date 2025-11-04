@@ -6,14 +6,6 @@
     <link rel="stylesheet" href="style.css"> </head>
 <body>
 
-<?//php include 'navbar.php'; ?>
-
-<header class="hero">
-    <h1>Plongez dans le rap français</h1>
-    <p>Découvertes, tops, concerts et plus encore.</p>
-    <a href="spotlight.php" class="btn big">Découvrir l’artiste du moment</a>
-</header>
-
 <nav>
     <div class="logo">WAVE</div>
     <div class="nav-links">
@@ -21,11 +13,18 @@
         <a href="spotlight.php">Spotlight</a>
         <a href="lastTop10.php">Top 10</a>
         <a href="sondage.php">Vote musique</a>
-        <a href="calendar.php">Futurs evénements</a>
+        <a href="calendar.php">Calendrier Concerts</a>
         <a href="blog.php">Blog</a>
-        <a href="connexion.php">connexion</a>
+        <a href="connexion.php">Connexion</a>
     </div>
 </nav>
+
+<header class="hero">
+    <h1>Plongez dans le rap français</h1>
+    <p>Découvertes, tops, concerts et plus encore.</p>
+    <a href="spotlight.php" class="btn big">Découvrir l’artiste du moment</a>
+</header>
+
 
 <main>
     <section class="block">
@@ -47,7 +46,6 @@
     &copy; 2025 WAVE - Tous droits réservés
 </footer>
 
-<?//php include 'footer.php'; ?>
 
 </body>
 </html>

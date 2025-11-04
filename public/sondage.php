@@ -1,36 +1,58 @@
+<?php
+require_once 'config.php';
+
+session_start();
+
+if (!isset($_SESSION['users_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// Exemple : récupérer tous les artistes
+$stmt = $pdo->query("SELECT * FROM artistes ORDER BY nom");
+$artistes = $stmt->fetchAll();
+
+foreach ($artistes as $artiste) {
+    echo "<p>" . htmlspecialchars($artiste['nom']) . "</p>";
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>WAVE - Vote Musical</title>
-     <link rel="stylesheet" href="style.css"> </head>
+    <link rel="stylesheet" href="style.css">
+</head>
 
 </head>
+
 <body>
 
-<nav>
-    <div class="logo">WAVE</div>
-    <div class="nav-links">
-        <a href="index.php">Accueil</a>
-        <a href="spotlight.php">Spotlight</a>
-        <a href="lastTop10.php">Top 10</a>
-        <a href="sondage.php">Vote musique</a>
-        <a href="calendar.php">Futurs evénements</a>
-        <a href="blog.php">Blog</a>
-        <a href="connexion.php">connexion</a>
-    </div>
-</nav>
+    <nav>
+        <div class="logo">WAVE</div>
+        <div class="nav-links">
+            <a href="index.php">Accueil</a>
+            <a href="spotlight.php">Spotlight</a>
+            <a href="lastTop10.php">Top 10</a>
+            <a href="sondage.php">Vote musique</a>
+            <a href="calendar.php">Calendrier Concerts</a>
+            <a href="blog.php">Blog</a>
+            <a href="connexion.php">Connexion</a>
+        </div>
+    </nav>
 
-<div class="container">
-    <h1>🎵 Classez vos 10 musiques préférées</h1>
-    <p style="text-align: center; color: #666; margin-bottom: 20px;">Glissez-déposez pour réorganiser</p>
+    <div class="container">
+        <h1>🎵 Classez vos 10 musiques préférées</h1>
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">Glissez-déposez pour réorganiser</p>
 
 
-    <form method="post">
-        <input type="hidden" name="classement" id="classement">
-        
-        <ul id="sortable-list">
+        <form method="post">
+            <input type="hidden" name="classement" id="classement">
+
+            <ul id="sortable-list">
                 <li class="musique-item" data-id="" draggable="true">
                     <div class="position"></div>
                     <div class="info">
@@ -39,39 +61,44 @@
                     </div>
                     <span style="color: #999; font-size: 1.3rem;">⋮⋮</span>
                 </li>
-        </ul>
-        <button type="submit">💾 Enregistrer mon classement</button>
-    </form>
-</div>
+            </ul>
+            <button type="submit">💾 Enregistrer mon classement</button>
+        </form>
+    </div>
 
-<script>
-const list = document.getElementById('sortable-list');
-let dragged;
+    <footer>
+        &copy; 2025 WAVE - Tous droits réservés
+    </footer>
 
-list.addEventListener('dragstart', e => dragged = e.target);
-list.addEventListener('dragover', e => {
-    e.preventDefault();
-    const after = [...list.querySelectorAll('.musique-item:not(.dragging)')].find(item => 
-        e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2
-    );
-    list.insertBefore(dragged, after);
-    updatePositions();
-});
+    <script>
+        const list = document.getElementById('sortable-list');
+        let dragged;
 
-function updatePositions() {
-    [...list.querySelectorAll('.musique-item')].forEach((item, i) => 
-        item.querySelector('.position').textContent = i + 1
-    );
-}
+        list.addEventListener('dragstart', e => dragged = e.target);
+        list.addEventListener('dragover', e => {
+            e.preventDefault();
+            const after = [...list.querySelectorAll('.musique-item:not(.dragging)')].find(item =>
+                e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2
+            );
+            list.insertBefore(dragged, after);
+            updatePositions();
+        });
 
-document.querySelector('form').addEventListener('submit', () => {
-    const classement = {};
-    [...list.querySelectorAll('.musique-item')].forEach((item, i) => 
-        classement[item.dataset.id] = i + 1
-    );
-    document.getElementById('classement').value = JSON.stringify(classement);
-});
-</script>
+        function updatePositions() {
+            [...list.querySelectorAll('.musique-item')].forEach((item, i) =>
+                item.querySelector('.position').textContent = i + 1
+            );
+        }
+
+        document.querySelector('form').addEventListener('submit', () => {
+            const classement = {};
+            [...list.querySelectorAll('.musique-item')].forEach((item, i) =>
+                classement[item.dataset.id] = i + 1
+            );
+            document.getElementById('classement').value = JSON.stringify(classement);
+        });
+    </script>
 
 </body>
+
 </html>

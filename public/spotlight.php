@@ -13,9 +13,9 @@
         <a href="spotlight.php">Spotlight</a>
         <a href="lastTop20.php">Top 10</a>
         <a href="sondage.php">Vote musique</a>
-        <a href="calendar.php">Futurs evénements</a>
+        <a href="calendar.php">Calendrier Concerts</a>
         <a href="blog.php">Blog</a>
-        <a href="connexion.php">connexion</a>
+        <a href="connexion.php">Connexion</a>
     </div>
 </nav>
 
