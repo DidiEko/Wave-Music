@@ -19,7 +19,7 @@
     <div class="nav-links">
         <a href="index.php">Accueil</a>
         <a href="spotlight.php">Spotlight</a>
-        <a href="lastTop20.php">Top 10</a>
+        <a href="lastTop10.php">Top 10</a>
         <a href="sondage.php">Vote musique</a>
         <a href="calendar.php">Futurs evénements</a>
         <a href="blog.php">Blog</a>
