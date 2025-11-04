@@ -1,13 +1,3 @@
-<?php
-// public/spotlight.php
-
-// --- SÉCURITÉ : Garde d'accès ---
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,42 +6,54 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="style.css"> </head>
 <body>
 
-<?php include 'navbar.php'; ?>
+<nav>
+    <div class="logo">WAVE</div>
+    <div class="nav-links">
+        <a href="index.php">Accueil</a>
+        <a href="spotlight.php">Spotlight</a>
+        <a href="lastTop20.php">Top 10</a>
+        <a href="sondage.php">Vote musique</a>
+        <a href="calendar.php">Futurs evénements</a>
+        <a href="blog.php">Blog</a>
+        <a href="connexion.php">connexion</a>
+    </div>
+</nav>
 
 <header class="hero">
     <h1>🎤 Spotlight</h1>
-    <p>Découvrez l’artiste de la semaine</p>
+    <p>Découvrez l'artiste du mois de Janvier! ❄️</p>
 </header>
 
 <main>
     <section class="block">
-        <h2>Artiste en avant</h2>
-        <div class="card-grid">
-            <div class="card">
-                <div class="card-img"></div>
-                <h3>Nom de l’artiste</h3>
-                <p>Biographie courte ici (remplaçable par la BDD).</p>
+        <h2>GIMS</h2>
+        <!-- <div class="card-grid">
+            <div class="card"> -->
+                <!-- <div class="card-img"><img src="./img/gims.jpeg" alt="Photo de GIMS"></div> -->
+                <p>Gims, stylisé GIMS, anciennement Maître Gims, né Gandhi Djuna le 6 mai 1986 à Kinshasa au Zaïre, est un chanteur et rappeur congolais. Il grandit en France et vit principalement entre la France et le Maroc. Il est membre du groupe de hip-hop Sexion d'assaut.</p>
                 <a href="#" class="btn">Écouter maintenant</a>
-            </div>
-        </div>
+            <!-- </div>
+        </div> -->
     </section>
 
     <section class="block">
-        <h2>Nos 5 songs préférés de Gims</h2>
+        <h2>Nos 5 musiques préférés de Gims</h2>
         <div class="list">
             <ul>
-                <li>1. Chanson 1</li>
-                <li>2. Chanson 2</li>
-                <li>3. Chanson 3</li>
-                <li>4. Chanson 4</li>
-                <li>5. Chanson 5</li>
+                <li>1. <a href="https://youtu.be/Rfhcng7Ux-A?si=VUjKCiuw5PFStcSL">Où aller</a></li>
+                <li>2.<a href="https://youtu.be/-KRe61NpaTA?si=lW-r2Ko5USC1w7yw">Tout donner</a></li>
+                <li>3.<a href="https://youtu.be/6yDEYu61piI?si=pjEAXj43YR4RFTyI">Zombie</a></li>
+                <li>4. <a href="https://youtu.be/CxDvKp-Hb2c?si=mcccC5ejXXU55P8u">Parisienne</a></li>
+                <li>5. <a href="https://youtu.be/s1LA-Kmqr04?si=-8IWX_oqRabsV8P8">DO YOU LOVE ME ?</a></li>
             </ul>
         </div>
     </section>
 
     </main>
 
-<?php include 'footer.php'; ?>
+<footer>
+    &copy; 2025 WAVE - Tous droits réservés
+</footer>
 
 </body>
 </html>
