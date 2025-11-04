@@ -16,7 +16,7 @@
         <a href="calendar.php">Calendrier Concerts</a>
         <a href="blog.php">Blog</a>
         <a href="connexion.php">Connexion</a>
-        <a href="test_db_indey.php">TEST</a>
+        <a href="test_db_index.php">TEST</a>
     </div>
 </nav>
 
