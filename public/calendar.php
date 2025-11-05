@@ -1,7 +1,3 @@
-<?php
-require_once 'config.php';
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,8 +9,7 @@ require_once 'config.php';
 <nav>
     <div class="logo">WAVE</div>
     <div class="nav-links">
-        <a href="index.php">Accueil</a>
-        <a href="spotlight.php">Spotlight</a>
+        <a href="index.php">Spotlight</a>
         <a href="lastTop10.php">Top 10</a>
         <a href="sondage.php">Vote musique</a>
         <a href="calendar.php">Calendrier Concerts</a>

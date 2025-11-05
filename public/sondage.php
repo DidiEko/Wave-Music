@@ -1,23 +1,3 @@
-<?php
-require_once 'config.php';
-
-session_start();
-
-if (!isset($_SESSION['users_id'])) {
-    header('Location: login.php');
-    exit;
-}
-
-// Exemple : récupérer tous les artistes
-$stmt = $pdo->query("SELECT * FROM artistes ORDER BY nom");
-$artistes = $stmt->fetchAll();
-
-foreach ($artistes as $artiste) {
-    echo "<p>" . htmlspecialchars($artiste['nom']) . "</p>";
-}
-?>
-
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -34,8 +14,7 @@ foreach ($artistes as $artiste) {
     <nav>
         <div class="logo">WAVE</div>
         <div class="nav-links">
-            <a href="index.php">Accueil</a>
-            <a href="spotlight.php">Spotlight</a>
+            <a href="index.php">Spotlight</a>
             <a href="lastTop10.php">Top 10</a>
             <a href="sondage.php">Vote musique</a>
             <a href="calendar.php">Calendrier Concerts</a>

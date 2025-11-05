@@ -1,0 +1,79 @@
+<?php
+
+//Ce bout de code on l'a vue en classe dans le cours "2.1 - 02.01-bases-de-donnees-et-pdo-avance" 
+
+require_once __DIR__ . '/../outils/autoloader.php';
+
+
+class utilisateurs_waveManager implements utilisateurs_waveInterface {
+
+    private $database;
+
+    public function __construct() {
+        $this->database = new Database();
+    }
+
+    public function getUsers(): array {
+        // Définition de la requête SQL pour récupérer tous les utilisateurs
+        $sql = "SELECT * FROM utilisateurs_wave";
+
+        // Préparation de la requête SQL
+        $stmt = $this->database->getPdo()->prepare($sql);
+
+        // Exécution de la requête SQL
+        $stmt->execute();
+
+        // Récupération de tous les utilisateurs
+        $users = $stmt->fetchAll();
+
+        // Retour de tous les utilisateurs
+        return $users;
+    }
+
+    public function addUser(User $user): int {
+        // Définition de la requête SQL pour ajouter un utilisateur
+        $sql = "INSERT INTO utilisateurs_wave (
+            email,
+            nomUtilisateur,
+            age,
+            motDePasse
+        ) VALUES (
+            :email,
+            :nomUtilisateur,
+            :age,
+            :motDePasse
+        )";
+
+        // Préparation de la requête SQL
+        $stmt = $this->database->getPdo()->prepare($sql);
+
+        // Lien avec les paramètres
+        $stmt->bindValue(':email', $user->getEmail());
+        $stmt->bindValue(':nomUtilisateur', $user->getNomUtilisateur());
+        $stmt->bindValue(':age', $user->getAge());
+        $stmt->bindValue(':motDePasse', $user->getMotDePasse());
+
+        // Exécution de la requête SQL pour ajouter un utilisateur
+        $stmt->execute();
+
+        // Récupération de l'identifiant de l'utilisateur ajouté
+        $userId = $this->database->getPdo()->lastInsertId();
+
+        // Retour de l'identifiant de l'utilisateur ajouté.
+        return $userId;
+    }
+
+    public function removeUser(int $id): bool {
+        // Définition de la requête SQL pour supprimer un utilisateur
+        $sql = "DELETE FROM utilisateurs_wave WHERE id = :id";
+
+        // Préparation de la requête SQL
+        $stmt = $this->database->getPdo()->prepare($sql);
+
+        // Lien avec le paramètre
+        $stmt->bindValue(':id', $id);
+
+        // Exécution de la requête SQL pour supprimer un utilisateur
+        return $stmt->execute();
+    }
+}
