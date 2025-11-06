@@ -89,7 +89,7 @@ class User
             $errors[] = "L'âge doit être un nombre positif.";
         }
         
-        if (strlen($this->mot_de_passe) > 8) {
+        if (strlen($this->mot_de_passe) < 8) {
     $errors[] = "Le mot de passe doit contenir au moins 8 caractères.";
 }
 

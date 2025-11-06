@@ -1,5 +1,27 @@
 <?php
+session_start();
+
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
+
+// if ($_SERVER["REQUEST_METHOD"] === "POST") {
+//     $email = $_POST['email'] ?? '';
+//     $mot_de_passe = $_POST['mot_de_passe'] ?? '';
+
+//     // On cherche l'utilisateur
+//     $stmt = $pdo->prepare("SELECT * FROM utilisateurs_wave WHERE email = :email");
+//     $stmt->bindValue(':email', $email);
+//     $stmt->execute();
+//     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+//     // Vérifie si trouvé et si mot de passe correspond
+//     if ($user && $mot_de_passe === $user['mot_de_passe']) { // ⚠️ pour tests uniquement, à remplacer par password_verify()
+//         $_SESSION['user_id'] = $user['id'];
+//         header("Location: monCompte.php");
+//         exit();
+//     } else {
+//         $error = "Email ou mot de passe incorrect.";
+//     }
+// }
 
 $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
 

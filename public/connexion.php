@@ -15,7 +15,8 @@ $dbname = $db['dbname'];
 $username = $db['username'];
 $password = $db['password'];
 
-$pdo = new PDO("mysql:host=$host;port=$port;charset=utf8mb4", $username, $password);
+$pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
+
 
 $sql = "CREATE DATABASE IF NOT EXISTS `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;";
 $stmt = $pdo->prepare($sql);
@@ -61,12 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $errors[] = "L'âge doit être un nombre positif.";
     }
 
-    if (strlen($mot_de_passe) > 8) {
+    if (strlen($mot_de_passe) < 8) {
         $errors[] = "Le mot de passe doit contenir au moins 8 caractères.";
     }
 
     if (empty($errors)) {
-        $sql = "INSERT INTO utilisateurs_wave (email,nom_utilisateur,age,mot_de_passe) VALUES (:email,:nom_utilisateur,:age,:mot_de_passe)";
 
         // Définition de la requête SQL pour ajouter un utilisateur
         $sql = "INSERT INTO utilisateurs_wave (
@@ -137,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="number" id="age" name="age" value="<?= htmlspecialchars($age ?? '') ?>" required min="0">
 
             <label for="first-name">Mot de passe</label>
-            <input type="password" id="mot_de_passe" name="first-name" value="<?= htmlspecialchars($firstName ?? '') ?>" required minlength="8">
+            <input type="password" id="mot_de_passe" name="mot_de_passe" value="<?= htmlspecialchars($firstName ?? '') ?>" required minlength="8">
 
             <button type="submit">Créer</button>
         </form>
