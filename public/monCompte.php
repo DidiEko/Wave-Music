@@ -69,24 +69,21 @@ $users = $stmt->fetchAll();
 
         <h2>Liste des utilisateur.trices</h2>
 
-        <p><a href="test_db_create.php"><button>Créer un.e nouvel.le utilisateur.trice</button></a></p>
-
         <table>
             <thead>
                 <tr>
-                    <th>Prénom</th>
-                    <th>Nom</th>
                     <th>Email</th>
+                    <th>Nom d'utilisateur</th>
                     <th>Âge</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($users as $user) { ?>
                     <tr>
-                        <td><?= htmlspecialchars($user['first_name']) ?></td>
-                        <td><?= htmlspecialchars($user['last_name']) ?></td>
                         <td><?= htmlspecialchars($user['email']) ?></td>
+                        <td><?= htmlspecialchars($user['nom_utilisateur']) ?></td>
                         <td><?= htmlspecialchars($user['age']) ?></td>
+                        <td><?= htmlspecialchars($user['mot_de_passe']) ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
