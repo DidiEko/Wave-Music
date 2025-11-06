@@ -6,20 +6,20 @@ class User
 {
     // Propriétés privées pour assurer l'encapsulation
     private string $email;
-    private string $nomUtilisateur;
+    private string $nom_utilisateur;
     private int $age;
-    private string $motDePasse;
-    private DateTime $dateDeCreation;
+    private string $mot_de_passe;
+    private DateTime $date_creation;
 
 
     // Constructeur pour initialiser l'objet
-    public function __construct(string $email, string $nomUtilisateur, int $age, string $motDePasse, DateTime $dateDeCreation)
+    public function __construct(string $email, string $nom_utilisateur, int $age, string $mot_de_passe, DateTime $date_creation)
     {
         $this->email = $email;
-        $this->nomUtilisateur = $nomUtilisateur;
+        $this->nom_utilisateur = $nom_utilisateur;
         $this->age = $age;
-        $this->motDePasse = $motDePasse;
-        $this->dateDeCreation = $dateDeCreation;
+        $this->mot_de_passe = $mot_de_passe;
+        $this->date_creation = $date_creation;
     }
 
     // Getters pour accéder aux propriétés
@@ -28,9 +28,9 @@ class User
         return $this->email;
     }
 
-    public function getNomUtilisateur(): string
+    public function getNom_utilisateur(): string
     {
-        return $this->nomUtilisateur;
+        return $this->nom_utilisateur;
     }
 
     public function getAge(): int
@@ -38,14 +38,14 @@ class User
         return $this->age;
     }
 
-    public function getMotDePasse(): string
+    public function getMot_de_passe(): string
     {
-        return $this->motDePasse;
+        return $this->mot_de_passe;
     }
 
-    public function getDateDeCreation(): DateTime
+    public function getDate_creation(): DateTime
     {
-        return $this->dateDeCreation;
+        return $this->date_creation;
     }
 
 
@@ -55,9 +55,9 @@ class User
         $this->email = $email;
     }
 
-    public function setNomUtilisateur(string $nomUtilisateur): void
+    public function setNom_utilisateur(string $nom_utilisateur): void
     {
-        $this->nomUtilisateur = $nomUtilisateur;
+        $this->nom_utilisateur = $nom_utilisateur;
     }
 
     public function setAge(int $age): void
@@ -67,9 +67,9 @@ class User
         }
     }
 
-    public function setMotDePasse(string $motDePasse): void
+    public function setMot_de_passe(string $mot_de_passe): void
     {
-        $this->motDePasse = $motDePasse;
+        $this->mot_de_passe = $mot_de_passe;
     }
 
     // Méthode pour valider les données de l'utilisateur
@@ -81,7 +81,7 @@ class User
             $errors[] = "Un email valide est requis.";
         }
 
-        if (empty($this->nomUtilisateur) || strlen($this->nomUtilisateur) < 2) {
+        if (empty($this->nom_utilisateur) || strlen($this->nom_utilisateur) < 2) {
             $errors[] = "Le nom d'utilisateur doit contenir au moins 2 caractères.";
         }
 
@@ -89,13 +89,8 @@ class User
             $errors[] = "L'âge doit être un nombre positif.";
         }
         
-        if (strlen($this->motDePasse) < 8) {
+        if (strlen($this->mot_de_passe) > 8) {
     $errors[] = "Le mot de passe doit contenir au moins 8 caractères.";
-}
-        //On n'a pas vu cela lors des cours, mais voici le lien de la doc (c'est pas hyper complexe)
-        //https://www.php.net/manual/fr/function.preg-match.php
-        if (!preg_match('/[0-9]/', $this->motDePasse)) {
-    $errors[] = "Le mot de passe doit contenir au moins un chiffre.";
 }
 
 

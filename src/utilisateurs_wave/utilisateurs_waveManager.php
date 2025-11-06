@@ -34,14 +34,14 @@ class utilisateurs_waveManager implements utilisateurs_waveInterface {
         // Définition de la requête SQL pour ajouter un utilisateur
         $sql = "INSERT INTO utilisateurs_wave (
             email,
-            nomUtilisateur,
+            nom_utilisateur,
             age,
-            motDePasse
+            mot_de_passe
         ) VALUES (
             :email,
-            :nomUtilisateur,
+            :nom_utilisateur,
             :age,
-            :motDePasse
+            :mot_de_passe
         )";
 
         // Préparation de la requête SQL
@@ -49,9 +49,9 @@ class utilisateurs_waveManager implements utilisateurs_waveInterface {
 
         // Lien avec les paramètres
         $stmt->bindValue(':email', $user->getEmail());
-        $stmt->bindValue(':nomUtilisateur', $user->getNomUtilisateur());
+        $stmt->bindValue(':nomUtilisateur', $user->getNom_utilisateur());
         $stmt->bindValue(':age', $user->getAge());
-        $stmt->bindValue(':motDePasse', $user->getMotDePasse());
+        $stmt->bindValue(':motDePasse', $user->getMot_de_passe());
 
         // Exécution de la requête SQL pour ajouter un utilisateur
         $stmt->execute();
