@@ -7,6 +7,10 @@
 <body>
 
 <?php include './nav/nav.php'; ?>
+<?php if (isset($_GET['deleted'])): ?>
+    <p style="color:green;">✅ Ton compte a bien été supprimé.</p>
+<?php endif; ?>
+
 
 <header class="hero">
     <h1>🎤 Spotlight</h1>
