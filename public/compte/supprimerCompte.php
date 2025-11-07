@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-require_once __DIR__ . '/../src/outils/autoloader.php';
+require_once __DIR__ . '/../../src/outils/autoloader.php';
 
 // Instancie ton manager
 $manager = new utilisateurs_waveManager();

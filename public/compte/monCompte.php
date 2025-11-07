@@ -83,7 +83,7 @@ $user = $stmt->fetch();
             <button type="submit" style="background-color: #b30000; color: white;">Supprimer mon compte</button>
         </form>
 
-        <p><a href="./modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
+        <p><a href="modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
 
         <p><a href="../auth/deconnexion.php"><button>Se déconnecter</button></a></p>
     </main>

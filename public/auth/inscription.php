@@ -1,6 +1,6 @@
 <?php
 // === Connexion à la base ===
-const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
+const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 
 // Lecture du fichier INI
 $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);

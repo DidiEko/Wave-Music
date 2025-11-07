@@ -1,6 +1,6 @@
     <?php
     // Constantes
-    const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
+    const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 
     // Démarre la session
     session_start();
