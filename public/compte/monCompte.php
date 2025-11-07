@@ -73,20 +73,14 @@ $user = $stmt->fetch();
                     </tr>
                 </tbody>
             </table>
-            <h2>Modifier mon mot de passe</h2>
 
-            <form method="POST" action="">
-                <label for="nouveau_mdp">Nouveau mot de passe</label>
-                <input type="password" id="nouveau_mdp" name="nouveau_mdp" required minlength="8">
-
-                <label for="confirm_mdp">Confirmer le mot de passe</label>
-                <input type="password" id="confirm_mdp" name="confirm_mdp" required minlength="8">
-
-                <button type="submit" name="changer_mdp">Mettre à jour</button>
-            </form>
         <?php else: ?>
             <p>Aucune donnée trouvée pour cet utilisateur.</p>
         <?php endif; ?>
+
+        <form action="supprimer_compte.php" method="POST" onsubmit="return confirm('⚠️ Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible.');">
+            <button type="submit" style="background-color: #b30000; color: white;">Supprimer mon compte</button>
+        </form>
 
         <p><a href="modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
 
