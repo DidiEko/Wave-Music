@@ -10,7 +10,7 @@
     <div class="logo">WAVE</div>
     <div class="nav-links">
         <a href="index.php">Spotlight</a>
-        <a href="lastTop20.php">Top 10</a>
+        <a href="lastTop10.php">Top 10</a>
         <a href="sondage.php">Vote musique</a>
         <a href="calendar.php">Calendrier Concerts</a>
         <a href="blog.php">Blog</a>
