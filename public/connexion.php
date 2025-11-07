@@ -7,7 +7,7 @@ session_start();
 
 // Si l'utilisateur est déjà connecté, le rediriger vers l'accueil
 if (isset($_SESSION['user_id'])) {
-    header('Location: ../index.php');
+    header('Location: index.php');
     exit();
 }
 

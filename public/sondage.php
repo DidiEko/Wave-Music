@@ -8,7 +8,7 @@ $userId = $_SESSION['user_id'] ?? null;
 // L'utilisateur n'est pas authentifié
 if (!$userId) {
     // Redirige vers la page de connexion si l'utilisateur n'est pas authentifié
-    header('Location: auth/connexion.php');
+    header('Location: connexion.php');
     exit();
 }
 
@@ -29,17 +29,7 @@ $username = $_SESSION['username'];
 
 <body>
 
-    <nav>
-        <div class="logo">WAVE</div>
-        <div class="nav-links">
-            <a href="index.php">Spotlight</a>
-            <a href="lastTop10.php">Top 10</a>
-            <a href="sondage.php">Vote musique</a>
-            <a href="calendar.php">Calendrier Concerts</a>
-            <a href="blog.php">Blog</a>
-            <a href="connexion.php">Connexion</a>
-        </div>
-    </nav>
+<?php include './nav/nav.php'; ?>
 
     <div class="container">
         <h1>🎵 Classez vos 10 musiques préférées</h1>
