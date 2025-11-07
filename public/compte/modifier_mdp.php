@@ -3,16 +3,15 @@ session_start();
 
 // Si l’utilisateur n’est pas connecté
 if (!isset($_SESSION['user_id'])) {
-    header('Location: connexion.php');
+    header('Location: ../auth/connexion.php');
     exit();
 }
 
-require_once __DIR__ . '/../../src/config/database.ini';
+// ➜ Ajoute ces deux lignes :
+require_once __DIR__ . '/../../src/config/database.php';
 require_once __DIR__ . '/../../src/utilisateurs_wave/utilisateurs_waveManager.php';
 
-// Initialisation du manager
 $manager = new utilisateurs_waveManager();
-
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
