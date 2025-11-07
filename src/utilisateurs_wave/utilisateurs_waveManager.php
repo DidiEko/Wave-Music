@@ -82,23 +82,14 @@ class utilisateurs_waveManager implements utilisateurs_waveInterface
         return $stmt->execute();
     }
     
-    public function updatePassword(int $id, string $nouveauMotDePasse): bool
-    {
-        // Hachage du mot de passe pour la sécurité
-        $motDePasseHashe = password_hash($nouveauMotDePasse, PASSWORD_DEFAULT);
+    public function updatePassword(int $id, string $nouveauMotDePasse): bool {
+    $sql = "UPDATE utilisateurs_wave SET mot_de_passe = :mot_de_passe WHERE id = :id";
 
-        // Requête SQL pour mettre à jour le mot de passe
-        $sql = "UPDATE utilisateurs_wave 
-            SET mot_de_passe = :mot_de_passe 
-            WHERE id = :id";
+    $stmt = $this->database->getPdo()->prepare($sql);
+    $stmt->bindValue(':mot_de_passe', $nouveauMotDePasse); 
+    $stmt->bindValue(':id', $id);
 
-        $stmt = $this->database->getPdo()->prepare($sql);
+    return $stmt->execute();
+}
 
-        // Lien des paramètres
-        $stmt->bindValue(':mot_de_passe', $motDePasseHashe);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
-
-        // Exécution
-        return $stmt->execute();
-    }
 }
