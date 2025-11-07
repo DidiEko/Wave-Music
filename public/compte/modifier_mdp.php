@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once __DIR__ . '/../../src/config/database.ini';
-require_once __DIR__ . '/../../src/manager/utilisateurs_waveManager.php';
+require_once __DIR__ . '/../../src/utilisateurs_wave/utilisateurs_waveManager.php';
 
 // Initialisation du manager
 $manager = new utilisateurs_waveManager();
