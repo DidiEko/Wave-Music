@@ -16,36 +16,48 @@ $error = '';
 
 // Traite le formulaire de connexion
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $nom_utilisateur = $_POST["nom_utilisateur"];
-    $mot_de_passe = $_POST["mot_de_passe"];
+    $nom_utilisateur = $_POST["nom_utilisateur"] ?? '';
+    $mot_de_passe   = $_POST["mot_de_passe"] ?? '';
 
-    // Validation des données
     if (empty($nom_utilisateur) || empty($mot_de_passe)) {
         $error = 'Tous les champs sont obligatoires.';
     } else {
         try {
-            // Connexion à la base de données
+            // 1) Lire la config (définit $host, $port, $dbname, $username, $password)
+            $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
+            if (!$config || !isset($config['database'])) {
+                throw new Exception("Impossible de lire la configuration DB.");
+            }
+            $db = $config['database'];
+            $host = $db['host'];
+            $port = $db['port'];
+            $dbname = $db['dbname'];
+            $username = $db['username'];
+            $password = $db['password'];
+
+            // 2) Connexion PDO
             $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
 
-            // Récupérer l'utilisateur de la base de données
+            // 3) Récupérer l'utilisateur par nom_utilisateur
             $stmt = $pdo->prepare('SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur');
             $stmt->execute(['nom_utilisateur' => $nom_utilisateur]);
-            $user = $stmt->fetch();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Vérifier le mot de passe
-            if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
-                // Authentification réussie - stocker les informations dans la session
+            // 4) Vérifier le mot de passe
+            // VERSION SANS HASH (comme vu en cours) :
+            if ($user && $mot_de_passe === $user['mot_de_passe']) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
-
-                // Rediriger vers la page d'accueil
                 header('Location: ../index.php');
                 exit();
             } else {
-                // Authentification échouée
-                $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                $error = "Nom d'utilisateur ou mot de passe incorrect.";
             }
-        } catch (PDOException $e) {
+
+            // --- Si un jour tu passes aux mots de passe hachés, remplace la comparaison par :
+            // if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) { ... }
+
+        } catch (Throwable $e) {
             $error = 'Erreur lors de la connexion : ' . $e->getMessage();
         }
     }
@@ -53,31 +65,29 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Se connecter | Gestion des sessions</title>
 </head>
-
 <body>
     <main class="container">
         <h1>Se connecter</h1>
 
-        <?php if ($error): ?>
+        <?php if (!empty($error)): ?>
             <article style="background-color: var(--pico-del-color);">
                 <p><strong>Erreur :</strong> <?= htmlspecialchars($error) ?></p>
             </article>
         <?php endif; ?>
 
-        <form method="post">
-            <label for="username">
+        <form method="post" action="">
+            <label for="nom_utilisateur">
                 Nom d'utilisateur
                 <input type="text" id="nom_utilisateur" name="nom_utilisateur" required autofocus>
             </label>
 
-            <label for="password">
+            <label for="mot_de_passe">
                 Mot de passe
                 <input type="password" id="mot_de_passe" name="mot_de_passe" required>
             </label>
@@ -86,9 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </form>
 
         <p>Pas encore de compte ? <a href="inscription.php">Créer un compte</a></p>
-
-        <p><a href="index.php">Retour à l'accueil</a></p>
+        <p><a href="../index.php">Retour à l'accueil</a></p>
     </main>
 </body>
-
 </html>
