@@ -1,146 +1,94 @@
 <?php
+// Constantes
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
 
-$config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
+// Démarre la session
+session_start();
 
-if (!$config) {
-    throw new Exception("Erreur lors de la lecture du fichier de configuration : " . DATABASE_CONFIGURATION_FILE);
+// Si l'utilisateur est déjà connecté, le rediriger vers l'accueil
+if (isset($_SESSION['user_id'])) {
+    header('Location: ../index.php');
+    exit();
 }
 
-$db = $config['database'];
+// Initialise les variables
+$error = '';
 
-$host = $db['host'];
-$port = $db['port'];
-$dbname = $db['dbname'];
-$username = $db['username'];
-$password = $db['password'];
-
-$pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
-
-
-$sql = "CREATE DATABASE IF NOT EXISTS `$dbname` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-
-$sql = "USE `$dbname`;";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
-
-// Création de la table `users` si elle n'existe pas
-$sql = "CREATE TABLE IF NOT EXISTS utilisateurs_wave (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    nom_utilisateur VARCHAR(100) NOT NULL UNIQUE,
-    age INT NOT NULL,
-    mot_de_passe VARCHAR(100),
-    date_creation DATETIME
-);";
-
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute();
-
-// Gère la soumission du formulaire
+// Traite le formulaire de connexion
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Récupération des données du formulaire
-    $email = $_POST["email"];
     $nom_utilisateur = $_POST["nom_utilisateur"];
-    $age = $_POST["age"];
     $mot_de_passe = $_POST["mot_de_passe"];
 
-    $errors = [];
+    // Validation des données
+    if (empty($nom_utilisateur) || empty($mot_de_passe)) {
+        $error = 'Tous les champs sont obligatoires.';
+    } else {
+        try {
+            // Connexion à la base de données
+            $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
 
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Un email valide est requis.";
-    }
+            // Récupérer l'utilisateur de la base de données
+            $stmt = $pdo->prepare('SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur');
+            $stmt->execute(['nom_utilisateur' => $nom_utilisateur]);
+            $user = $stmt->fetch();
 
-    if (empty($nom_utilisateur) || strlen($nom_utilisateur) < 2) {
-        $errors[] = "Le nom d'utilisateur doit contenir au moins 2 caractères.";
-    }
+            // Vérifier le mot de passe
+            if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
+                // Authentification réussie - stocker les informations dans la session
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
 
-    if ($age < 0) {
-        $errors[] = "L'âge doit être un nombre positif.";
-    }
-
-    if (strlen($mot_de_passe) < 8) {
-        $errors[] = "Le mot de passe doit contenir au moins 8 caractères.";
-    }
-
-    if (empty($errors)) {
-
-        // Définition de la requête SQL pour ajouter un utilisateur
-        $sql = "INSERT INTO utilisateurs_wave (
-            email,
-            nom_utilisateur,
-            age,
-            mot_de_passe
-        ) VALUES (
-            :email,
-            :nom_utilisateur,
-            :age,
-            :mot_de_passe
-        )";
-
-        $stmt = $pdo->prepare($sql);
-
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
-        $stmt->bindValue(':age', $age);
-        $stmt->bindValue(':mot_de_passe', $mot_de_passe);
-
-        $stmt->execute();
-
-        header("Location: monCompte.php");
-        exit();
+                // Rediriger vers la page d'accueil
+                header('Location: ../index.php');
+                exit();
+            } else {
+                // Authentification échouée
+                $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
+            }
+        } catch (PDOException $e) {
+            $error = 'Erreur lors de la connexion : ' . $e->getMessage();
+        }
     }
 }
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-
-    <title>Connexion</title>
+    <title>Se connecter | Gestion des sessions</title>
 </head>
 
 <body>
     <main class="container">
-        <h1>Veuillez vous connecter:</h1>
+        <h1>Se connecter</h1>
 
-        <?php if ($_SERVER["REQUEST_METHOD"] === "POST") { ?>
-            <?php if (empty($errors)) { ?>
-                <p style="color: green;">Le formulaire a été soumis avec succès !</p>
-            <?php } else { ?>
-                <p style="color: red;">Le formulaire contient des erreurs :</p>
-                <ul>
-                    <?php foreach ($errors as $error) { ?>
-                        <li><?php echo $error; ?></li>
-                    <?php } ?>
-                </ul>
-            <?php } ?>
-        <?php } ?>
+        <?php if ($error): ?>
+            <article style="background-color: var(--pico-del-color);">
+                <p><strong>Erreur :</strong> <?= htmlspecialchars($error) ?></p>
+            </article>
+        <?php endif; ?>
 
-        <form action="connexion.php" method="POST">
+        <form method="post">
+            <label for="username">
+                Nom d'utilisateur
+                <input type="text" id="username" name="username" required autofocus>
+            </label>
 
-            <label for="email">E-mail</label>
-            <input type="email" id="email" name="email" value="<?= htmlspecialchars($email ?? '') ?>" required>
+            <label for="password">
+                Mot de passe
+                <input type="password" id="password" name="password" required>
+            </label>
 
-            <label for="nom_utilisateur">Nom d'utilisateur</label>
-            <input type="text" id="nom_utilisateur" name="nom_utilisateur" value="<?= htmlspecialchars($nom_utilisateur ?? '') ?>" required minlength="2">
-
-            <label for="age">Âge</label>
-            <input type="number" id="age" name="age" value="<?= htmlspecialchars($age ?? '') ?>" required min="0">
-
-            <label for="first-name">Mot de passe</label>
-            <input type="password" id="mot_de_passe" name="mot_de_passe" value="<?= htmlspecialchars($firstName ?? '') ?>" required minlength="8">
-
-            <button type="submit">Créer</button>
+            <button type="submit">Se connecter</button>
         </form>
+
+        <p>Pas encore de compte ? <a href="register.php">Créer un compte</a></p>
+
+        <p><a href="../index.php">Retour à l'accueil</a></p>
     </main>
 </body>
 
