@@ -36,8 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
                 // Authentification réussie - stocker les informations dans la session
                 $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role'];
+                $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
 
                 // Rediriger vers la page d'accueil
                 header('Location: ../index.php');
@@ -75,20 +74,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <form method="post">
             <label for="username">
                 Nom d'utilisateur
-                <input type="text" id="username" name="username" required autofocus>
+                <input type="text" id="nom_utilisateur" name="nom_utilisateur" required autofocus>
             </label>
 
             <label for="password">
                 Mot de passe
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="mot_de_passe" name="mot_de_passe" required>
             </label>
 
             <button type="submit">Se connecter</button>
         </form>
 
-        <p>Pas encore de compte ? <a href="register.php">Créer un compte</a></p>
+        <p>Pas encore de compte ? <a href="inscription.php">Créer un compte</a></p>
 
-        <p><a href="../index.php">Retour à l'accueil</a></p>
+        <p><a href="index.php">Retour à l'accueil</a></p>
     </main>
 </body>
 
