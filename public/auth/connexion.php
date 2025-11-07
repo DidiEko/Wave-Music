@@ -7,7 +7,7 @@
 
     // Si l'utilisateur est déjà connecté, le rediriger vers l'accueil
     if (isset($_SESSION['user_id'])) {
-        header('Location: index.php');
+        header('Location: ././index.php');
         exit();
     }
 
@@ -95,8 +95,8 @@
                 <button type="submit">Se connecter</button>
             </form>
 
-            <p>Pas encore de compte ? <a href="inscription.php">Créer un compte</a></p>
-            <p><a href="../index.php">Retour à l'accueil</a></p>
+            <p>Pas encore de compte ? <a href="/auth/inscription.php">Créer un compte</a></p>
+            <p><a href="./index.php">Retour à l'accueil</a></p>
         </main>
     </body>
     </html>

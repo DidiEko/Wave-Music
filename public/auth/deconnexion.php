@@ -4,7 +4,7 @@ session_start();
 $userId = $_SESSION['user_id'] ?? null;
 
 if (!$userId) {
-    header('Location: connexion.php');
+    header('Location: auth/connexion.php');
     exit();
 }
 
@@ -26,7 +26,7 @@ session_destroy();
 
         <p>Vous avez été déconnecté.e avec succès.</p>
 
-        <p><a href="index.php">Retour à l'accueil</a> | <a href="connexion.php">Se connecter à nouveau</a></p>
+        <p><a href="./index.php">Retour à l'accueil</a> | <a href=" auth/connexion.php">Se connecter à nouveau</a></p>
     </main>
 </body>
 
