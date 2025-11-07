@@ -5,15 +5,18 @@
 require_once __DIR__ . '/../outils/autoloader.php';
 
 
-class utilisateurs_waveManager implements utilisateurs_waveInterface {
+class utilisateurs_waveManager implements utilisateurs_waveInterface
+{
 
     private $database;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->database = new Database();
     }
 
-    public function getUsers(): array {
+    public function getUsers(): array
+    {
         // Définition de la requête SQL pour récupérer tous les utilisateurs
         $sql = "SELECT * FROM utilisateurs_wave";
 
@@ -30,7 +33,8 @@ class utilisateurs_waveManager implements utilisateurs_waveInterface {
         return $users;
     }
 
-    public function addUser(User $user): int {
+    public function addUser(User $user): int
+    {
         // Définition de la requête SQL pour ajouter un utilisateur
         $sql = "INSERT INTO utilisateurs_wave (
             email,
@@ -63,7 +67,8 @@ class utilisateurs_waveManager implements utilisateurs_waveInterface {
         return $userId;
     }
 
-    public function removeUser(int $id): bool {
+    public function removeUser(int $id): bool
+    {
         // Définition de la requête SQL pour supprimer un utilisateur
         $sql = "DELETE FROM utilisateurs_wave WHERE id = :id";
 
@@ -74,6 +79,26 @@ class utilisateurs_waveManager implements utilisateurs_waveInterface {
         $stmt->bindValue(':id', $id);
 
         // Exécution de la requête SQL pour supprimer un utilisateur
+        return $stmt->execute();
+    }
+    
+    public function updatePassword(int $id, string $nouveauMotDePasse): bool
+    {
+        // Hachage du mot de passe pour la sécurité
+        $motDePasseHashe = password_hash($nouveauMotDePasse, PASSWORD_DEFAULT);
+
+        // Requête SQL pour mettre à jour le mot de passe
+        $sql = "UPDATE utilisateurs_wave 
+            SET mot_de_passe = :mot_de_passe 
+            WHERE id = :id";
+
+        $stmt = $this->database->getPdo()->prepare($sql);
+
+        // Lien des paramètres
+        $stmt->bindValue(':mot_de_passe', $motDePasseHashe);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        // Exécution
         return $stmt->execute();
     }
 }

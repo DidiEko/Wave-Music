@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // 3) Récupérer l'utilisateur par nom_utilisateur
             $stmt = $pdo->prepare('SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur');
             $stmt->execute(['nom_utilisateur' => $nom_utilisateur]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch();
 
             // 4) Vérifier le mot de passe
             // VERSION SANS HASH (comme vu en cours) :
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // --- Si un jour tu passes aux mots de passe hachés, remplace la comparaison par :
             // if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) { ... }
 
-        } catch (Throwable $e) {
+        } catch (PDOException $e) {
             $error = 'Erreur lors de la connexion : ' . $e->getMessage();
         }
     }
