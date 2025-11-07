@@ -53,6 +53,7 @@ $user = $stmt->fetch();
 
 <body>
     <main class="container">
+        <?php include './nav/nav.php'; ?>
         <h1>Mon compte</h1>
 
         <?php if ($user): ?>
