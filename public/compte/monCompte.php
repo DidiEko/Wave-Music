@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
+const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
+
 
 // Vérifie si l’utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
@@ -82,9 +83,9 @@ $user = $stmt->fetch();
             <button type="submit" style="background-color: #b30000; color: white;">Supprimer mon compte</button>
         </form>
 
-        <p><a href="modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
+        <p><a href="./modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
 
-        <p><a href="deconnexion.php"><button>Se déconnecter</button></a></p>
+        <p><a href="../auth/deconnexion.php"><button>Se déconnecter</button></a></p>
     </main>
 </body>
 

@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button type="submit">Mettre à jour</button>
         </form>
 
-        <p><a href="monCompte.php">⬅ Retour à mon compte</a></p>
+        <p><a href="../index.php">⬅ Retour à mon compte</a></p>
     </main>
 </body>
 </html>

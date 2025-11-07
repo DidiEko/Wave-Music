@@ -3,7 +3,7 @@ session_start();
 
 // Si l'utilisateur n'est pas connecté, on le redirige
 if (!isset($_SESSION['user_id'])) {
-    header('Location: connexion.php');
+    header('Location: ../auth/connexion.php');
     exit();
 }
 
@@ -22,7 +22,7 @@ if ($ok) {
     session_destroy();
 
     // Redirige vers la page d'accueil ou de confirmation
-    header('Location: index.php?deleted=1');
+    header('Location: ../index.php?deleted=1');
     exit();
 } else {
     echo "<p style='color:red;'>❌ Une erreur est survenue lors de la suppression du compte.</p>";

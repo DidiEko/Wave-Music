@@ -19,11 +19,11 @@ $nom_utilisateur = $_SESSION['nom_utilisateur'] ?? '';
         <a href="blog.php">Blog</a>
 
         <?php if ($estConnecté): ?>
-            <a href="monCompte.php">Mon compte (<?= htmlspecialchars($nom_utilisateur) ?>)</a>
-            <a href="deconnexion.php" style="color: red;">Déconnexion</a>
+            <a href="compte/monCompte.php">Mon compte (<?= htmlspecialchars($nom_utilisateur) ?>)</a>
+            <a href="auth/deconnexion.php" style="color: red;">Déconnexion</a>
         <?php else: ?>
             <!-- Si l'utilisateur n'est PAS connecté -->
-            <a href="connexion.php">Connexion</a>
+            <a href="auth/connexion.php">Connexion</a>
         <?php endif; ?>
     </div>
 </nav>
