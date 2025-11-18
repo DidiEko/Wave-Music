@@ -115,7 +115,7 @@ try {
 
     // Expéditeur et destinataire
     $mail->setFrom($from_email, $from_name);
-    $mail->addAddress('CHANGE_ME', 'CHANGE WITH YOUR NAME');
+    $mail->addAddress('info@waveemusic.ch', 'Wave Music');
 
     // Contenu du mail
     $mail->isHTML(true);
