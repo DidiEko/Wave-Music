@@ -1,4 +1,7 @@
 <?php
+
+use Users\User;
+
 session_start();
 
 // Si l’utilisateur n’est pas connecté
@@ -9,9 +12,9 @@ if (!isset($_SESSION['user_id'])) {
 
 // ➜ Ajoute ces deux lignes :
 require_once __DIR__ . '/../../src/config/database.php';
-require_once __DIR__ . '/../../src/utilisateurs_wave/utilisateurs_waveManager.php';
+require_once __DIR__ . '/../../src/classes/Users/UserManager.php';
 
-$manager = new utilisateurs_waveManager();
+$manager = new UserManager();
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

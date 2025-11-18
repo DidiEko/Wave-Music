@@ -101,7 +101,7 @@ $password = $config['password'];
 $from_email = $config['from_email'];
 $from_name = $config['from_name'];
 
-$mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+$mail = new PHPMailer(true);
 
 try {
     $mail->isSMTP();
