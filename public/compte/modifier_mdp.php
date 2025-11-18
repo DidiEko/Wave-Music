@@ -1,6 +1,13 @@
 <?php
 
+require_once __DIR__ . '/../../src/outils/autoloader.php';
+
+require_once __DIR__ . '/../../src/config/database.php';
+require_once __DIR__ . '/../../src/classes/Users/UserManager.php';
+
+
 use Users\User;
+use Users\UserManager;
 
 session_start();
 
@@ -9,10 +16,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: ../auth/connexion.php');
     exit();
 }
-
-// ➜ Ajoute ces deux lignes :
-require_once __DIR__ . '/../../src/config/database.php';
-require_once __DIR__ . '/../../src/classes/Users/UserManager.php';
 
 $manager = new UserManager();
 $message = '';
