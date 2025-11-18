@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../../src/outils/autoloader.php';
+
 // === Connexion à la base ===
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 
@@ -74,16 +77,70 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $error = implode('<br>', $errors);
     }
 }
+
+//----------------------------------
+
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+const MAIL_CONFIGURATION_FILE = __DIR__ . '/../../src/config/mail.ini';
+
+$config = parse_ini_file(MAIL_CONFIGURATION_FILE, true);
+
+if (!$config) {
+    throw new Exception("Erreur lors de la lecture du fichier de configuration : " .
+        MAIL_CONFIGURATION_FILE);
+}
+
+$host = $config['host'];
+$port = filter_var($config['port'], FILTER_VALIDATE_INT);
+$authentication = filter_var($config['authentication'], FILTER_VALIDATE_BOOLEAN);
+$username = $config['username'];
+$password = $config['password'];
+$from_email = $config['from_email'];
+$from_name = $config['from_name'];
+
+$mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+
+try {
+    $mail->isSMTP();
+    $mail->Host = $host;
+    $mail->Port = $port;
+    $mail->SMTPAuth = $authentication;
+    $mail->Username = $username;
+    $mail->Password = $password;
+    $mail->CharSet = "UTF-8";
+    $mail->Encoding = "base64";
+
+    // Expéditeur et destinataire
+    $mail->setFrom($from_email, $from_name);
+    $mail->addAddress('CHANGE_ME', 'CHANGE WITH YOUR NAME');
+
+    // Contenu du mail
+    $mail->isHTML(true);
+    $mail->Subject = 'Inscrption à WaveMusique';
+    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+    $mail->send();
+
+    echo 'Message has been sent';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>Créer un compte</title>
 </head>
+
 <body>
     <main class="container">
         <h1>Créer un compte</h1>
@@ -117,4 +174,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <p><a href="../index.php">Retour à l'accueil</a></p>
     </main>
 </body>
+
 </html>

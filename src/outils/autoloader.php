@@ -8,9 +8,10 @@ spl_autoload_register(function ($class) {
 
     // Dossiers où chercher les classes
     $folders = [
-        __DIR__ . '/../config/',          
-        __DIR__ . '/../utilisateurs_wave/', 
-        __DIR__ . '/../outils/',          
+        __DIR__ . '/../config/',
+        __DIR__ . '/../utilisateurs_wave/',
+        __DIR__ . '/../outils/',
+        __DIR__ . '/../classes/PHPMailer/',
     ];
 
     // Recherche du fichier correspondant
