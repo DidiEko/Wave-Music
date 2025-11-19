@@ -21,9 +21,10 @@ $username = $_SESSION['nom_utilisateur'];
 <head>
 <meta charset="UTF-8">
 <title>WAVE - BLOG</title>
-<link rel="stylesheet" href="style.css"> </head>
+<link rel="stylesheet" href="style/blog.css"></head>
 <body>
  
+
 <?php include './nav/nav.php'; ?>
  
 <main class="blog-page">

@@ -19,12 +19,8 @@ $username = $db['username'];
 $password = $db['password'];
 
 // Connexion à la DB
-$pdo = new PDO(
-    "mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4",
-    $username,
-    $password,
-    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-);
+$pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
+
 
 // Requête : musiques + artistes (TOP 10)
 $sql = "
