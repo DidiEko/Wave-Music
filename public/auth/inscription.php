@@ -115,20 +115,22 @@ try {
 
     // Expéditeur et destinataire
     $mail->setFrom($from_email, $from_name);
-    $mail->addAddress('info@waveemusic.ch', 'Wave Music');
+    $mail->addAddress($email, $nom_utilisateur); // On envoie au nouvel utilisateur
 
     // Contenu du mail
     $mail->isHTML(true);
-    $mail->Subject = 'Inscrption à WaveMusique';
-    $mail->Body    = 'This is the HTML message body <b>in bold!</b>';
-    $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    $mail->Subject = 'Inscrption à WaveMusic';
+    $mail->Body    = 'Bienvenue chez <b>WaveMusic</b>, ' . htmlspecialchars($nom_utilisateur) . ' on est ravi de te recevoir ';
+    $mail->AltBody = 'Bienvenue chez <b>WaveMusic</b>, ' . htmlspecialchars($nom_utilisateur) . ' on est ravi de te recevoir ';
 
+    // Envoi
     $mail->send();
 
-    echo 'Message has been sent';
+    $success = "Un email de bienvenue t'a été envoyé 🎉";
 } catch (Exception $e) {
-    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    $error = "Erreur lors de l'envoi du mail : {$mail->ErrorInfo}";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -169,6 +171,15 @@ try {
 
             <button type="submit">Créer mon compte</button>
         </form>
+
+        <?php if ($error): ?>
+            <p style="color: red;"><strong>Erreur :</strong> <?= $error ?></p>
+        <?php endif; ?>
+
+        <?php if ($success): ?>
+            <p style="color: green;"><strong><?= $success ?></strong></p>
+        <?php endif; ?>
+
 
         <p>Vous avez déjà un compte ? <a href="connexion.php">Se connecter</a></p>
         <p><a href="../index.php">Retour à l'accueil</a></p>
