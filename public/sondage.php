@@ -1,20 +1,41 @@
 <?php
-// Démarre la session
 session_start();
 
-// Vérifie si l'utilisateur est authentifié
-$userId = $_SESSION['user_id'] ?? null;
+const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 
-// L'utilisateur n'est pas authentifié
-if (!$userId) {
-    // Redirige vers la page de connexion si l'utilisateur n'est pas authentifié
-    header('Location: ./auth/connexion.php');
-    exit();
+$config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
+
+$db = $config['database'];
+$pdo = new PDO(
+    "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4",
+    $db['username'],
+    $db['password']
+);
+
+// IDs des musiques sélectionnées
+$ids = [4, 9, 10, 11, 12, 15, 16, 17, 18, 20];
+
+$sql = "
+    SELECT m.id, m.titre, m.lien_youtube, m.annee_sortie, a.nom_artiste
+    FROM musique_wave AS m
+    JOIN artistes_wave AS a ON m.artiste_id = a.id
+    WHERE m.id IN (" . implode(',', $ids) . ")
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$musics = $stmt->fetchAll();
+
+// Traitement du formulaire
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $classement = $_POST["classement"]; // tableau id => position
+    echo "<pre>";
+    print_r($classement);
+    echo "</pre>";
+    // Ici tu pourras enregistrer dans la base
 }
-
-// Sinon, récupère les autres informations de l'utilisateur
-$username = $_SESSION['nom_utilisateur'];
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,69 +43,54 @@ $username = $_SESSION['nom_utilisateur'];
 <head>
     <meta charset="UTF-8">
     <title>WAVE - Vote Musical</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/sondage.css">
 </head>
 
 </head>
 
 <body>
 
-<?php include './nav/nav.php'; ?>
+    <?php include './nav/nav.php'; ?>
 
     <div class="container">
-        <h1>🎵 Classez vos 10 musiques préférées</h1>
-        <p style="text-align: center; color: #666; margin-bottom: 20px;">Glissez-déposez pour réorganiser</p>
-
+        <h1>🎵 Classe ton Top 10</h1>
 
         <form method="post">
-            <input type="hidden" name="classement" id="classement">
 
-            <ul id="sortable-list">
-                <li class="musique-item" data-id="" draggable="true">
-                    <div class="position"></div>
-                    <div class="info">
-                        <div class="titre"></div>
-                        <div class="artiste"></div>
-                    </div>
-                    <span style="color: #999; font-size: 1.3rem;">⋮⋮</span>
-                </li>
-            </ul>
-            <button type="submit">💾 Enregistrer mon classement</button>
+            <table class="table-classement">
+                <tr>
+                    <th>Ordre</th>
+                    <th>Titre</th>
+                    <th>Artiste</th>
+                    <th>Clip</th>
+                </tr>
+
+                <?php foreach ($musics as $music): ?>
+                    <tr>
+                        <td>
+                            <select name="classement[<?= $music['id'] ?>]" required>
+                                <option value="">--</option>
+                                <?php for ($i = 1; $i <= 10; $i++): ?>
+                                    <option value="<?= $i ?>"><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </td>
+                        <td><?= htmlspecialchars($music['titre']) ?></td>
+                        <td><?= htmlspecialchars($music['nom_artiste']) ?></td>
+                        <td>
+                            <a href="<?= htmlspecialchars($music['lien_youtube']) ?>" target="_blank">▶️ Voir</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <button type="submit" class="btn">💾 Enregistrer</button>
         </form>
     </div>
 
     <footer>
         &copy; 2025 WAVE - Tous droits réservés
     </footer>
-
-    <script>
-        const list = document.getElementById('sortable-list');
-        let dragged;
-
-        list.addEventListener('dragstart', e => dragged = e.target);
-        list.addEventListener('dragover', e => {
-            e.preventDefault();
-            const after = [...list.querySelectorAll('.musique-item:not(.dragging)')].find(item =>
-                e.clientY < item.getBoundingClientRect().top + item.offsetHeight / 2
-            );
-            list.insertBefore(dragged, after);
-            updatePositions();
-        });
-
-        function updatePositions() {
-            [...list.querySelectorAll('.musique-item')].forEach((item, i) =>
-                item.querySelector('.position').textContent = i + 1
-            );
-        }
-
-        document.querySelector('form').addEventListener('submit', () => {
-            const classement = {};
-            [...list.querySelectorAll('.musique-item')].forEach((item, i) =>
-                classement[item.dataset.id] = i + 1
-            );
-            document.getElementById('classement').value = JSON.stringify(classement);
-        });
-    </script>
 
 </body>
 

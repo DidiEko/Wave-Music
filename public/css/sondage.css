@@ -1,0 +1,32 @@
+.table-classement {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.table-classement th, .table-classement td {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.table-classement th {
+    color: #4da6ff;
+}
+
+select {
+    background: #1a1a1a;
+    color: #eee;
+    border: 1px solid #444;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.btn {
+    margin-top: 20px;
+    padding: 12px 20px;
+    background: #4da6ff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}

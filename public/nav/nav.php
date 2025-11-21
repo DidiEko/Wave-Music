@@ -12,18 +12,21 @@ $nom_utilisateur = $_SESSION['nom_utilisateur'] ?? '';
 <nav>
     <div class="logo">WAVE</div>
     <div class="nav-links">
-        <a href="index.php">Spotlight</a>
-        <a href="lastTop10.php">Top 10</a>
-        <a href="sondage.php">Vote musique</a>
-        <a href="calendar.php">Calendrier Concerts</a>
-        <a href="blog.php">Blog</a>
+        <a href="/Wave-Music/public/index.php">Spotlight</a>
+        <a href="/Wave-Music/public/lastTop10.php">Top 10</a>
+        <a href="/Wave-Music/public/sondage.php">Vote musique</a>
+        <a href="/Wave-Music/public/calendar.php">Calendrier Concerts</a>
+        <a href="/Wave-Music/public/blog.php">Blog</a>
 
         <?php if ($estConnecté): ?>
-            <a href="compte/monCompte.php">Mon compte (<?= htmlspecialchars($nom_utilisateur) ?>)</a>
-            <a href="auth/deconnexion.php" style="color: red;">Déconnexion</a>
+            <a href="/Wave-Music/public/compte/monCompte.php">
+                Mon compte (<?= htmlspecialchars($nom_utilisateur) ?>)
+            </a>
+            <a href="/Wave-Music/public/auth/deconnexion.php" style="color: red;">
+                Déconnexion
+            </a>
         <?php else: ?>
-            <!-- Si l'utilisateur n'est PAS connecté -->
-            <a href="auth/connexion.php">Connexion</a>
+            <a href="/Wave-Music/public/auth/connexion.php">Connexion</a>
         <?php endif; ?>
     </div>
 </nav>
