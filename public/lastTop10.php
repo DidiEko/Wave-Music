@@ -52,10 +52,11 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="dark light">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="css/lastTop10.css">
+
     <title>Top 10 des musiques - WAVE</title>
 
-    <style>
+    <!-- <style>
         body {
             background: #0d0d0d;
             color: #fff;
@@ -127,13 +128,12 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
             text-decoration: none;
             color: inherit;
         }
-    </style>
+    </style> -->
 </head>
 
+<?php include './nav/nav.php'; ?>
+
 <body>
-
-    <?php include 'nav/nav.php'; ?>
-
     <main class="container">
         <h1>🎵 Top 10 des musiques</h1>
         <p>Classement mis à jour automatiquement.</p>
@@ -156,7 +156,7 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <?php if (!empty($url)): ?>
                     <a href="<?= htmlspecialchars((string)$url) ?>" target="_blank" class="card-link">
-                <?php endif; ?>
+                    <?php endif; ?>
 
                     <article class="music-card <?= $extraClass ?>">
                         <div class="music-rank">#<?= $rank ?></div>
@@ -175,7 +175,7 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </p>
                     </article>
 
-                <?php if (!empty($url)): ?>
+                    <?php if (!empty($url)): ?>
                     </a>
                 <?php endif; ?>
 
@@ -188,4 +188,5 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </footer>
 
 </body>
+
 </html>
