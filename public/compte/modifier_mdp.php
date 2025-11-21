@@ -43,9 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Modifier mon mot de passe</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+    <link rel="stylesheet" href="../css/compte.css">
 </head>
 <body>
+    <?php include './public/nav/nav.php'; ?>
     <main class="container">
         <h1>Modifier mon mot de passe</h1>
 

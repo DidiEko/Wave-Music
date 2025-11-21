@@ -1,4 +1,7 @@
 <?php
+
+use Users\UserManager;
+
 session_start();
 
 // Si l'utilisateur n'est pas connecté, on le redirige
@@ -10,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 require_once __DIR__ . '/../../src/outils/autoloader.php';
 
 // Instancie ton manager
-$manager = new utilisateurs_waveManager();
+$manager = new UserManager();
 
 $userId = $_SESSION['user_id'];
 
