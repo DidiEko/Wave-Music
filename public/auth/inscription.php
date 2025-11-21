@@ -2,6 +2,12 @@
 
 require_once __DIR__ . '/../../src/outils/autoloader.php';
 
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+const MAIL_CONFIGURATION_FILE = __DIR__ . '/../../src/config/mail.ini';
+
 // === Connexion à la base ===
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 
@@ -72,63 +78,60 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute();
 
             $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
+
+            if ($success) {
+
+                //ENVOIE DU MAIL
+
+                $config = parse_ini_file(MAIL_CONFIGURATION_FILE, true);
+
+                if (!$config) {
+                    throw new Exception("Erreur lors de la lecture du fichier de configuration : " .
+                        MAIL_CONFIGURATION_FILE);
+                }
+
+                $host = $config['host'];
+                $port = filter_var($config['port'], FILTER_VALIDATE_INT);
+                $authentication = filter_var($config['authentication'], FILTER_VALIDATE_BOOLEAN);
+                $username = $config['username'];
+                $password = $config['password'];
+                $from_email = $config['from_email'];
+                $from_name = $config['from_name'];
+
+                $mail = new PHPMailer(true);
+
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = $host;
+                    $mail->Port = $port;
+                    $mail->SMTPAuth = $authentication;
+                    $mail->Username = $username;
+                    $mail->Password = $password;
+                    $mail->CharSet = "UTF-8";
+                    $mail->Encoding = "base64";
+
+                    // Expéditeur et destinataire
+                    $mail->setFrom($from_email, $from_name);
+                    $mail->addAddress($email, $nom_utilisateur); // On envoie au nouvel utilisateur
+
+                    // Contenu du mail
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Inscrption à WaveMusic';
+                    $mail->Body    = 'Bienvenue chez <b>WaveMusic</b>, ' . htmlspecialchars($nom_utilisateur) . ' on est ravi de te recevoir ';
+                    $mail->AltBody = 'Bienvenue chez <b>WaveMusic</b>, ' . htmlspecialchars($nom_utilisateur) . ' on est ravi de te recevoir ';
+
+                    // Envoi
+                    $mail->send();
+
+                    $success = "Un email de bienvenue t'a été envoyé 🎉";
+                } catch (Exception $e) {
+                    $error = "Erreur lors de l'envoi du mail : {$mail->ErrorInfo}";
+                }
+            }
         }
     } else {
         $error = implode('<br>', $errors);
     }
-}
-
-//----------------------------------
-
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-const MAIL_CONFIGURATION_FILE = __DIR__ . '/../../src/config/mail.ini';
-
-$config = parse_ini_file(MAIL_CONFIGURATION_FILE, true);
-
-if (!$config) {
-    throw new Exception("Erreur lors de la lecture du fichier de configuration : " .
-        MAIL_CONFIGURATION_FILE);
-}
-
-$host = $config['host'];
-$port = filter_var($config['port'], FILTER_VALIDATE_INT);
-$authentication = filter_var($config['authentication'], FILTER_VALIDATE_BOOLEAN);
-$username = $config['username'];
-$password = $config['password'];
-$from_email = $config['from_email'];
-$from_name = $config['from_name'];
-
-$mail = new PHPMailer(true);
-
-try {
-    $mail->isSMTP();
-    $mail->Host = $host;
-    $mail->Port = $port;
-    $mail->SMTPAuth = $authentication;
-    $mail->Username = $username;
-    $mail->Password = $password;
-    $mail->CharSet = "UTF-8";
-    $mail->Encoding = "base64";
-
-    // Expéditeur et destinataire
-    $mail->setFrom($from_email, $from_name);
-    $mail->addAddress($email, $nom_utilisateur); // On envoie au nouvel utilisateur
-
-    // Contenu du mail
-    $mail->isHTML(true);
-    $mail->Subject = 'Inscrption à WaveMusic';
-    $mail->Body    = 'Bienvenue chez <b>WaveMusic</b>, ' . htmlspecialchars($nom_utilisateur) . ' on est ravi de te recevoir ';
-    $mail->AltBody = 'Bienvenue chez <b>WaveMusic</b>, ' . htmlspecialchars($nom_utilisateur) . ' on est ravi de te recevoir ';
-
-    // Envoi
-    $mail->send();
-
-    $success = "Un email de bienvenue t'a été envoyé 🎉";
-} catch (Exception $e) {
-    $error = "Erreur lors de l'envoi du mail : {$mail->ErrorInfo}";
 }
 
 ?>
@@ -147,15 +150,6 @@ try {
     <main class="container">
         <h1>Créer un compte</h1>
 
-        <?php if ($error): ?>
-            <p style="color: red;"><strong>Erreur :</strong> <?= $error ?></p>
-        <?php endif; ?>
-
-        <?php if ($success): ?>
-            <p style="color: green;"><strong><?= $success ?></strong></p>
-            <p><a href="connexion.php">Se connecter maintenant</a></p>
-        <?php endif; ?>
-
         <form action="" method="POST">
             <label for="email">E-mail</label>
             <input type="email" id="email" name="email" required>
@@ -172,16 +166,15 @@ try {
             <button type="submit">Créer mon compte</button>
         </form>
 
-        <?php if ($error): ?>
-            <p style="color: red;"><strong>Erreur :</strong> <?= $error ?></p>
+        <?php if (!$success): ?>
+            <p>Vous avez déjà un compte ? <a href="connexion.php">Se connecter</a></p>
         <?php endif; ?>
+
 
         <?php if ($success): ?>
             <p style="color: green;"><strong><?= $success ?></strong></p>
+            <p><a href="connexion.php">Se connecter maintenant</a></p>
         <?php endif; ?>
-
-
-        <p>Vous avez déjà un compte ? <a href="connexion.php">Se connecter</a></p>
         <p><a href="../index.php">Retour à l'accueil</a></p>
     </main>
 </body>
