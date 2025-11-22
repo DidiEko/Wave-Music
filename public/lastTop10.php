@@ -56,82 +56,9 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <title>Top 10 des musiques - WAVE</title>
 
-    <!-- <style>
-        body {
-            background: #0d0d0d;
-            color: #fff;
-        }
-
-        .top10-container {
-            max-width: 550px;
-            margin: 2rem auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .music-card {
-            padding: 1rem 1.3rem;
-            border-radius: 1rem;
-            border: 1px solid #444;
-            background: #151515;
-            color: #fff;
-            cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        .music-card:hover {
-            transform: scale(1.03);
-            background: #1b1b1b;
-        }
-
-        /* Styles podium */
-        .first {
-            border-color: #ffd700;
-            background: linear-gradient(135deg, #2b2100, #5f4e00, #ffd70040);
-        }
-
-        .second {
-            border-color: #c0c0c0;
-            background: linear-gradient(135deg, #2a2a2a, #6f6f6f, #c0c0c040);
-        }
-
-        .third {
-            border-color: #cd7f32;
-            background: linear-gradient(135deg, #2d1f14, #7a4c2e, #cd7f3240);
-        }
-
-        .music-rank {
-            font-weight: 700;
-            font-size: 1rem;
-            opacity: 0.85;
-        }
-
-        .music-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0.2rem 0 0.2rem 0;
-        }
-
-        .music-artist {
-            margin: 0;
-            opacity: 0.85;
-        }
-
-        .music-meta {
-            margin-top: 0.4rem;
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
-        a.card-link {
-            text-decoration: none;
-            color: inherit;
-        }
-    </style> -->
 </head>
 
-<?php include './nav/nav.php'; ?>
+<?php include 'nav/nav.php'; ?>
 
 <body>
     <main class="container">

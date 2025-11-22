@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
 
 <body>
 
-<?php include './nav/nav.php'; ?>
+<?php include 'nav/nav.php'; ?>
 
 <div class="container">
     <h1>🎵 Classe ton Top 10</h1>

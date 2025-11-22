@@ -4,7 +4,7 @@ use Database;
 
 //Ce bout de code on l'a vue en classe dans le cours "2.1 - 02.01-bases-de-donnees-et-pdo-avance" 
 
-require_once __DIR__ . '/../outils/autoloader.php';
+require_once __DIR__ . '/../../outils/autoloader.php';
 
 
 class UserManager implements UserInterface

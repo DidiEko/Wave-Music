@@ -47,7 +47,7 @@ $sql = "
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
-$concerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$concerts = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -266,7 +266,7 @@ $concerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 
-<?php include './nav/nav.php'; ?>
+<?php include 'nav/nav.php'; ?>
 
 <main class="page-calendrier">
 

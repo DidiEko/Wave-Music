@@ -65,13 +65,16 @@
     ?>
     <!DOCTYPE html>
     <html lang="fr">
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../css/auth.css">
         <title>Se connecter | Gestion des sessions</title>
     </head>
+
     <body>
+        <?php include '../nav/nav.php'; ?>
         <main class="container">
             <h1>Se connecter</h1>
 
@@ -99,4 +102,5 @@
             <p><a href="../index.php">Retour à l'accueil</a></p>
         </main>
     </body>
+
     </html>

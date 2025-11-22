@@ -81,10 +81,6 @@ $user = $stmt->fetch();
             <p>Aucune donnée trouvée pour cet utilisateur.</p>
         <?php endif; ?>
 
-        <form action="supprimer_compte.php" method="POST" onsubmit="return confirm('⚠️ Es-tu sûr de vouloir supprimer ton compte ? Cette action est irréversible.');">
-            <button type="submit" style="background-color: #b30000; color: white;">Supprimer mon compte</button>
-        </form>
-
         <p><a href="modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
 
         <p><a href="../auth/deconnexion.php"><button>Se déconnecter</button></a></p>

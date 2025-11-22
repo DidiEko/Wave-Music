@@ -21,6 +21,8 @@ session_destroy();
 </head>
 
 <body>
+
+    <?php include '../nav/nav.php'; ?>
     <main class="container">
         <h1>Déconnexion réussie</h1>
 

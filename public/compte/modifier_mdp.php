@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../css/compte.css">
 </head>
 <body>
-    <?php include './public/nav/nav.php'; ?>
+    <?php include '../nav/nav.php'; ?>
     <main class="container">
         <h1>Modifier mon mot de passe</h1>
 

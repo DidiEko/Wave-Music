@@ -6,7 +6,8 @@
     <link rel="stylesheet" href="css/style.css"> </head>
 <body>
 
-<?php include './nav/nav.php'; ?>
+<?php include 'nav/nav.php'; ?>
+
 <?php if (isset($_GET['deleted'])): ?>
     <p style="color:green;">✅ Ton compte a bien été supprimé.</p>
 <?php endif; ?>

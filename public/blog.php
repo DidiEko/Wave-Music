@@ -27,7 +27,7 @@ $username = $_SESSION['nom_utilisateur'];
 
 
 <body>
-    <?php include './nav/nav.php'; ?>
+    <?php include 'nav/nav.php'; ?>
 
 
     <main class="blog-page">

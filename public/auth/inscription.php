@@ -147,6 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body>
+    <?php include '../nav/nav.php'; ?>
     <main class="container">
         <h1>Créer un compte</h1>
 
