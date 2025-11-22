@@ -55,7 +55,7 @@ $concerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
 <meta charset="UTF-8">
 <title>WAVE - Calendrier des prochains concerts</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 
 <style>
     body {
@@ -214,6 +214,54 @@ $concerts = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-size: 1.4rem;
         }
     }
+
+    nav {
+     display: flex;
+     /* Utilise Flexbox pour aligner les éléments */
+     justify-content: space-between;
+     /* Espace entre logo et liens */
+     align-items: center;
+     /* Centre verticalement les éléments */
+     padding: 15px 40px;
+     /* Espacement interne du nav */
+     background: #1a1a1a;
+     /* Fond sombre */
+     position: sticky;
+     /* Reste visible en scrollant */
+     top: 0;
+     /* Position en haut de la page */
+     z-index: 1000;
+     /* Priorité au-dessus des autres éléments */
+ }
+
+ /* Logo dans la navigation */
+ nav .logo {
+     font-size: 1.5em;
+     /* Taille du texte du logo */
+     font-weight: bold;
+     /* Texte en gras */
+     color: #4da6ff;
+     /* Couleur bleue */
+ }
+
+ /* Liens de navigation */
+ nav .nav-links a {
+     margin-left: 20px;
+     /* Espace entre les liens */
+     text-decoration: none;
+     /* Supprime le soulignement */
+     color: #eee;
+     /* Couleur texte blanche */
+     font-weight: 500;
+     /* Poids moyen */
+     transition: color 0.3s;
+     /* Animation lors du survol */
+ }
+
+ nav .nav-links a:hover {
+     color: #4da6ff;
+     /* Change la couleur au survol */
+ }
 </style>
 </head>
 <body>

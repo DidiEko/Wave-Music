@@ -1,14 +1,11 @@
 <?php
-// Démarre la session (si pas déjà fait)
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Vérifie si l'utilisateur est connecté
 $estConnecté = isset($_SESSION['user_id']);
 $nom_utilisateur = $_SESSION['nom_utilisateur'] ?? '';
 ?>
-
 <nav>
     <div class="logo">WAVE</div>
     <div class="nav-links">
