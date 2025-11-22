@@ -59,15 +59,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($errors)) {
         // Vérifie si le nom existe déjà
-        $stmt = $pdo->prepare("SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur");
+        $stmt = $pdo->prepare("
+    SELECT email, nom_utilisateur 
+    FROM utilisateurs_wave 
+    WHERE email = :email OR nom_utilisateur = :nom_utilisateur
+");
         $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
+        $stmt->bindValue(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch();
 
         if ($user) {
-            $error = "Ce nom d'utilisateur est déjà pris.";
+            if ($user['nom_utilisateur'] === $nom_utilisateur) {
+                $error = "Ce nom d'utilisateur est déjà pris.";
+            } elseif ($user['email'] === $email) {
+                $error = "Cet email est déjà utilisé.";
+            }
         } else {
-            // Insertion dans la base (sans hash)
+            // Insertion dans la base 
             $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe)
                     VALUES (:email, :nom_utilisateur, :age, :mot_de_passe)";
             $stmt = $pdo->prepare($sql);
@@ -79,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
 
-            if ($success) {
+            if (!empty($success)) {
 
                 //ENVOIE DU MAIL
 
