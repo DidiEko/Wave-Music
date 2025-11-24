@@ -100,13 +100,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 $mail = new PHPMailer(true);
 
+
                 try {
                     $mail->isSMTP();
                     $mail->Host = $host;
                     $mail->Port = $port;
+                    //On a demandé à chat, et sa fonctionne pas sans.
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                     $mail->SMTPAuth = $authentication;
                     $mail->Username = $username;
                     $mail->Password = $password;
+
+                    // // ⭐ POUR VOIR SI UNE ERREUR APPARAÎT (à enlever ensuite)
+                    // $mail->SMTPDebug = 2;
+                    // $mail->Debugoutput = 'html';
+
                     $mail->CharSet = "UTF-8";
                     $mail->Encoding = "base64";
 
