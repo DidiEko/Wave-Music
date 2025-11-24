@@ -119,6 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $mail->CharSet = "UTF-8";
                     $mail->Encoding = "base64";
 
+                    // Pour faire fonctionner les mails via Infomaniak
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+
                     // Expéditeur et destinataire
                     $mail->setFrom($from_email, $from_name);
                     $mail->addAddress($email, $nom_utilisateur); // On envoie au nouvel utilisateur
