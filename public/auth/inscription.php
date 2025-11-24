@@ -59,24 +59,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($errors)) {
         // Vérifie si le nom existe déjà
-        $stmt = $pdo->prepare("
-    SELECT email, nom_utilisateur 
-    FROM utilisateurs_wave 
-    WHERE email = :email OR nom_utilisateur = :nom_utilisateur
-");
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur");
         $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
-        $stmt->bindValue(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch();
 
         if ($user) {
-            if ($user['nom_utilisateur'] === $nom_utilisateur) {
-                $error = "Ce nom d'utilisateur est déjà pris.";
-            } elseif ($user['email'] === $email) {
-                $error = "Cet email est déjà utilisé.";
-            }
+            $error = "Ce nom d'utilisateur est déjà pris.";
         } else {
-            // Insertion dans la base 
+            // Insertion dans la base (sans hash)
             $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe)
                     VALUES (:email, :nom_utilisateur, :age, :mot_de_passe)";
             $stmt = $pdo->prepare($sql);
@@ -88,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
 
-            if (!empty($success)) {
+            if ($success) {
 
                 //ENVOIE DU MAIL
 
@@ -118,9 +109,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $mail->Password = $password;
                     $mail->CharSet = "UTF-8";
                     $mail->Encoding = "base64";
-
-                    // Pour faire fonctionner les mails via Infomaniak
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
                     // Expéditeur et destinataire
                     $mail->setFrom($from_email, $from_name);
