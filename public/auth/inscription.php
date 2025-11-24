@@ -59,17 +59,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if (empty($errors)) {
         // Vérifie si le nom existe déjà
-        $stmt = $pdo->prepare("SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur");
+        $stmt = $pdo->prepare("
+    SELECT email, nom_utilisateur 
+    FROM utilisateurs_wave
+    WHERE email = :email OR nom_utilisateur = :nom_utilisateur
+");
+
+        $stmt->bindValue(':email', $email);
         $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
         $stmt->execute();
-        $user = $stmt->fetch();
 
-        if ($user) {
-            $error = "Ce nom d'utilisateur est déjà pris.";
-        } else {
-            // Insertion dans la base (sans hash)
+        $existing = $stmt->fetch();
+
+        if ($existing) {
+            if ($existing['email'] === $email) {
+                $error = "Cet email est déjà utilisé.";
+            } elseif ($existing['nom_utilisateur'] === $nom_utilisateur) {
+                $error = "Ce nom d'utilisateur est déjà pris.";
+            }
+        }
+
+
+        if (empty($error)) {
+
+            // Insertion dans la base 
             $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe)
-                    VALUES (:email, :nom_utilisateur, :age, :mot_de_passe)";
+            VALUES (:email, :nom_utilisateur, :age, :mot_de_passe)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':email', $email);
             $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
@@ -78,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute();
 
             $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
+
 
             if ($success) {
 
@@ -159,6 +175,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <main class="container">
         <h1>Créer un compte</h1>
 
+        <?php if (!empty($error)): ?>
+            <p style="color: red; font-weight: bold; margin-top: 10px;">
+                <?= $error ?>
+            </p>
+        <?php endif; ?>
+
         <form action="" method="POST">
             <label for="email">E-mail</label>
             <input type="email" id="email" name="email" required>
@@ -167,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="text" id="nom_utilisateur" name="nom_utilisateur" required minlength="2">
 
             <label for="age">Âge</label>
-            <input type="number" id="age" name="age" required min="0">
+            <input type="number" id="age" name="age" required min="1">
 
             <label for="mot_de_passe">Mot de passe</label>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required minlength="8">
