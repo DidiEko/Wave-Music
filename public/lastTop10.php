@@ -46,7 +46,7 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 
 <head>
     <meta charset="utf-8">
@@ -54,7 +54,7 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="color-scheme" content="dark light">
     <link rel="stylesheet" href="css/lastTop10.css">
 
-    <title>Top 10 des musiques - WAVE</title>
+    <title><?= $textes['title_top10'] ?> - WAVE</title>
 
 </head>
 
@@ -62,8 +62,8 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <main class="container">
-        <h1>🎵 Top 10 des musiques</h1>
-        <p>Classement mis à jour automatiquement.</p>
+       <h1><?= $textes['title_top10'] ?></h1>
+        <p><?= $textes['subtitle_top10'] ?></p>>
 
         <section class="top10-container">
             <?php foreach ($musics as $index => $music): ?>
@@ -98,7 +98,7 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </p>
 
                         <p class="music-meta">
-                            Sortie en <strong><?= htmlspecialchars($music['annee_sortie']) ?></strong>
+                            <?= $textes['top10_released_in'] ?> <strong><?= htmlspecialchars($music['annee_sortie']) ?></strong>
                         </p>
                     </article>
 
@@ -111,7 +111,7 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </main>
 
     <footer>
-        &copy; 2025 WAVE - Tous droits réservés
+        <?= $textes['footer_copyright'] ?>
     </footer>
 
 </body>

@@ -1,41 +1,48 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+<?php require_once __DIR__ . '/../src/outils/gestion_langue.php'; ?>
+<!DOCTYPE html>
+<html lang="<?= $langue ?>">
+<head>
+    <meta charset="UTF-8">
+    <title>WAVE - <?= $textes['title_spotlight'] ?></title>
+    <link rel="stylesheet" href="css/style.css"> 
+</head>
+<body>
 
-// Sécurité : Si $textes n'est pas chargé, on met un tableau vide pour éviter le crash
-if (!isset($textes)) { $textes = []; }
+<?php include 'nav/nav.php'; ?>
 
-$estConnecté = isset($_SESSION['user_id']);
-$nom_utilisateur = $_SESSION['nom_utilisateur'] ?? '';
-?>
+<?php if (isset($_GET['deleted'])): ?>
+    <p style="color:green;"><?= $textes['index_deleted_account_message'] ?></p>
+<?php endif; ?>
 
-<nav>
-    <div class="logo">WAVE</div>
-    <div class="nav-links">
-        <a href="/public/index.php"><?= $textes['nav_spotlight'] ?? 'Spotlight' ?></a>
-        <a href="/public/lastTop10.php"><?= $textes['nav_top10'] ?? 'Top 10' ?></a>
-        <a href="/public/sondage.php"><?= $textes['nav_vote'] ?? 'Vote' ?></a>
-        <a href="/public/calendar.php"><?= $textes['nav_calendar'] ?? 'Calendrier' ?></a>
-        <a href="/public/blog.php"><?= $textes['nav_blog'] ?? 'Blog' ?></a>
+<header class="hero">
+    <h1><?= $textes['title_spotlight'] ?></h1>
+    <p><?= $textes['desc_spotlight'] ?></p>
+</header>
 
-        <?php if ($estConnecté): ?>
-            <a href="/public/compte/monCompte.php">
-                <?= $textes['nav_account'] ?? 'Mon Compte' ?> (<?= htmlspecialchars($nom_utilisateur) ?>)
-            </a>
-            <a href="/public/auth/deconnexion.php" style="color:red;">
-                <?= $textes['nav_logout'] ?? 'Déconnexion' ?>
-            </a>
-        <?php else: ?>
-            <a href="/public/auth/connexion.php">
-                <?= $textes['nav_login'] ?? 'Connexion' ?>
-            </a>
-        <?php endif; ?>
+<main>
+    <section class="block">
+        <h2>GIMS</h2>
+        <p><?= $textes['bio_gims'] ?></p>
+        <a href="#" class="btn"><?= $textes['listen_btn'] ?></a>
+    </section>
 
-        <span style="margin-left:15px; font-size:0.9em; border-left:1px solid #444; padding-left:15px; font-weight:bold;">
-            <a href="?lang=fr" style="text-decoration:none; color:<?= ($langue ?? 'fr') === 'fr' ? '#4da6ff' : '#888' ?>;">FR</a>
-            <span style="color:#444; margin:0 5px;">|</span>
-            <a href="?lang=en" style="text-decoration:none; color:<?= ($langue ?? 'fr') === 'en' ? '#4da6ff' : '#888' ?>;">EN</a>
-        </span>
-    </div>
-</nav>
+    <section class="block">
+        <h2><?= $textes['index_favorite_songs_title'] ?></h2>
+        <div class="list">
+            <ul>
+                <li>1. <a href="https://youtu.be/Rfhcng7Ux-A?si=VUjKCiuw5PFStcSL">Où aller</a></li>
+                <li>2. <a href="https://youtu.be/-KRe61NpaTA?si=lW-r2Ko5USC1w7yw">Tout donner</a></li>
+                <li>3. <a href="https://youtu.be/6yDEYu61piI?si=pjEAXj43YR4RFTyI">Zombie</a></li>
+                <li>4. <a href="https://youtu.be/CxDvKp-Hb2c?si=mcccC5ejXXU55P8u">Parisienne</a></li>
+                <li>5. <a href="https://youtu.be/s1LA-Kmqr04?si=-8IWX_oqRabsV8P8">DO YOU LOVE ME ?</a></li>
+            </ul>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <?= $textes['footer_copyright'] ?>
+</footer>
+
+</body>
+</html>

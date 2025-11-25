@@ -51,10 +51,10 @@ $concerts = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 <head>
 <meta charset="UTF-8">
-<title>WAVE - Calendrier des prochains concerts</title>
+<title>WAVE - <?= $textes['title_calendar'] ?></title>
 <link rel="stylesheet" href="css/style.css">
 
 <style>
@@ -270,75 +270,75 @@ $concerts = $stmt->fetchAll();
 
 <main class="page-calendrier">
 
-    <h1>Calendrier des concerts</h1>
-    <p class="calendrier-intro">
-        Tous les prochains concerts rap WAVE en Suisse, triés par date.
-    </p>
-
-    <?php if (empty($concerts)): ?>
-        <p>Pas encore de dates enregistrées.</p>
-    <?php else: ?>
-        <section class="calendrier-list">
-            <?php foreach ($concerts as $concert): ?>
-                <?php
-                    // Format date
-                    $timestamp = strtotime($concert['date']);
-                    $day   = date('d', $timestamp);
-                    $month = date('M', $timestamp);
-                    $year  = date('Y', $timestamp);
-
-                    // Canton badge class
-                    $canton = $concert['canton_unicode'];
-                    $badgeClass = 'badge-canton';
-                    if ($canton === 'GE') $badgeClass .= ' badge-GE';
-                    elseif ($canton === 'VD') $badgeClass .= ' badge-VD';
-                    elseif ($canton === 'FR') $badgeClass .= ' badge-FR';
-                    elseif ($canton === 'ZH') $badgeClass .= ' badge-ZH';
-
-                    // Heure
-                    $heure = $concert['heure_debut']
-                        ? substr($concert['heure_debut'], 0, 5)
-                        : 'À confirmer';
-                ?>
-
-                <article class="concert-card">
-                    <div class="concert-date">
-                        <div class="concert-date-day"><?= $day ?></div>
-                        <div>
-                            <div class="concert-date-month"><?= strtoupper($month) ?></div>
-                            <div class="concert-date-year"><?= $year ?></div>
+    <h1><?= $textes['title_calendar'] ?></h1>
+        <p class="calendrier-intro">
+        <?= $textes['intro_calendar'] ?>
+            </p>
+    
+        <?php if (empty($concerts)): ?>
+            <p><?= $textes['calendar_no_events'] ?></p>
+        <?php else: ?>
+            <section class="calendrier-list">
+                <?php foreach ($concerts as $concert): ?>
+                    <?php
+                        // Format date
+                        $timestamp = strtotime($concert['date']);
+                        $day   = date('d', $timestamp);
+                        $month = date('M', $timestamp);
+                        $year  = date('Y', $timestamp);
+    
+                        // Canton badge class
+                        $canton = $concert['canton_unicode'];
+                        $badgeClass = 'badge-canton';
+                        if ($canton === 'GE') $badgeClass .= ' badge-GE';
+                        elseif ($canton === 'VD') $badgeClass .= ' badge-VD';
+                        elseif ($canton === 'FR') $badgeClass .= ' badge-FR';
+                        elseif ($canton === 'ZH') $badgeClass .= ' badge-ZH';
+    
+                        // Heure
+                        $heure = $concert['heure_debut']
+                            ? substr($concert['heure_debut'], 0, 5)
+                            : 'À confirmer';
+                    ?>
+    
+                    <article class="concert-card">
+                        <div class="concert-date">
+                            <div class="concert-date-day"><?= $day ?></div>
+                            <div>
+                                <div class="concert-date-month"><?= strtoupper($month) ?></div>
+                                <div class="concert-date-year"><?= $year ?></div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="concert-content">
-                        <div class="concert-artist">
-                            <?= htmlspecialchars($concert['nom_artiste']) ?>
+    
+                        <div class="concert-content">
+                            <div class="concert-artist">
+                                <?= htmlspecialchars($concert['nom_artiste']) ?>
+                            </div>
+    
+                            <div class="concert-salle">
+                                <?= htmlspecialchars($concert['nom_salle']) ?>
+                            </div>
+    
+                            <div class="concert-location">
+                                <span><?= htmlspecialchars($concert['ville']) ?></span>
+                                <span class="<?= $badgeClass ?>">
+                                    <?= htmlspecialchars($canton) ?>
+                                </span>
+                            </div>
+    
+                            <div class="concert-meta">
+                                <?= $textes['calendar_time'] ?> : <span class="concert-time"><?= htmlspecialchars($heure) ?></span>
+                            </div>
                         </div>
-
-                        <div class="concert-salle">
-                            <?= htmlspecialchars($concert['nom_salle']) ?>
-                        </div>
-
-                        <div class="concert-location">
-                            <span><?= htmlspecialchars($concert['ville']) ?></span>
-                            <span class="<?= $badgeClass ?>">
-                                <?= htmlspecialchars($canton) ?>
-                            </span>
-                        </div>
-
-                        <div class="concert-meta">
-                            Heure : <span class="concert-time"><?= htmlspecialchars($heure) ?></span>
-                        </div>
-                    </div>
-                </article>
-            <?php endforeach; ?>
-        </section>
-    <?php endif; ?>
+                    </article>
+                <?php endforeach; ?>
+            </section>
+        <?php endif; ?>
 
 </main>
 
 <footer>
-    &copy; 2025 WAVE - Tous droits réservés
+    <?= $textes['footer_copyright'] ?>
 </footer>
 
 </body>

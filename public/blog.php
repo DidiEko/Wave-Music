@@ -17,11 +17,11 @@ $username = $_SESSION['nom_utilisateur'];
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>WAVE - BLOG</title>
+    <title>WAVE - <?= $textes['title_blog'] ?></title>
     <link rel="stylesheet" href="css/blog.css">
 </head>
 
@@ -32,10 +32,10 @@ $username = $_SESSION['nom_utilisateur'];
 
     <main class="blog-page">
 
-        <h1 class="blog-title">SCOOPS & EXCLUS RAP</h1>
-        <p class="blog-intro">
-            Infos exclusives, scoops, spotted, coulisses : voici les actus brûlantes du rap francophone, version WAVE.
-        </p>
+        <h1 class="blog-title"><?= $textes['title_blog'] ?></h1>
+<p class="blog-intro">
+    <?= $textes['intro_blog'] ?>
+</p>
 
         <section class="blog-posts">
 
@@ -112,7 +112,7 @@ $username = $_SESSION['nom_utilisateur'];
 
 
     <footer>
-        &copy; 2025 WAVE - Tous droits réservés
+        <?= $textes['footer_copyright'] ?>
     </footer>
 
 </body>

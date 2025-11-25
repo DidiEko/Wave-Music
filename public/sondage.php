@@ -2,7 +2,7 @@
 session_start();
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../src/config/database.ini';
-
+//hello test
 // Vérifie si l'utilisateur est authentifié
 $userId = $_SESSION['user_id'] ?? null;
 
@@ -25,7 +25,7 @@ $pdo = new PDO(
     $db['password']
 );
 
-// Vérifie si l’utilisateur a déjà voté
+// Vérifie si l’utilisateur a déjà vote
 $stmt = $pdo->prepare("SELECT COUNT(*) FROM classement_utilisateur WHERE user_id = :uid");
 $stmt->execute(['uid' => $userId]);
 $aDejaVote = $stmt->fetchColumn() > 0;
@@ -66,19 +66,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
 
         // Mise à jour du flag pour ne plus réafficher le formulaire
         $aDejaVote = true;
-        $message = "<p style='color:lightgreen; text-align:center;'>Ton classement a été enregistré !</p>";
+        $message = "<p style='color:lightgreen; text-align:center;'>{$textes['vote_success']}</p>";
     }
 }
 ?>
 
-
-
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 
 <head>
     <meta charset="UTF-8">
-    <title>WAVE - Vote Musical</title>
+    <title>WAVE - <?= $textes['title_vote'] ?></title>
     <link rel="stylesheet" href="css/sondage.css">
 </head>
 
@@ -87,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
 <?php include 'nav/nav.php'; ?>
 
 <div class="container">
-    <h1>🎵 Classe ton Top 10</h1>
+    <h1><?= $textes['title_vote'] ?></h1>
 
     <?php if (isset($message)) echo $message; ?>
 
@@ -96,10 +94,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
 
             <table class="table-classement">
                 <tr>
-                    <th>Ordre</th>
-                    <th>Titre</th>
-                    <th>Artiste</th>
-                    <th>Clip</th>
+                    <th><?= $textes['vote_order'] ?></th>
+                    <th><?= $textes['vote_title'] ?></th>
+                    <th><?= $textes['vote_artist'] ?></th>
+                    <th><?= $textes['vote_clip'] ?></th>
                 </tr>
 
                 <?php foreach ($musics as $music): ?>
@@ -115,25 +113,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
                     <td><?= htmlspecialchars($music['titre']) ?></td>
                     <td><?= htmlspecialchars($music['nom_artiste']) ?></td>
                     <td>
-                        <a href="<?= htmlspecialchars($music['lien_youtube']) ?>" target="_blank">▶️ Voir</a>
+                        <a href="<?= htmlspecialchars($music['lien_youtube']) ?>" target="_blank"><?= $textes['vote_watch'] ?></a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </table>
 
-            <button type="submit" class="btn">💾 Enregistrer</button>
+            <button type="submit" class="btn"><?= $textes['btn_save'] ?></button>
         </form>
 
     <?php else: ?>
         <p style="text-align:center; color:#bbb; margin-top:20px;">
-            ⭐ Tu as déjà voté ! Merci pour ta participation ⭐
+            <?= $textes['vote_already_voted'] ?>
         </p>
     <?php endif; ?>
 
 </div>
 
 <footer>
-    &copy; 2025 WAVE - Tous droits réservés
+    <?= $textes['footer_copyright'] ?>
 </footer>
 
 </body>
