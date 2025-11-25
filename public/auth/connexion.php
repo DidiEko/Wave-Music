@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <button type="submit"><?= $textes['btn_connect'] ?></button>
         </form>
 
-        <p><?= $textes['link_no_account'] ?> <a href="inscription.php"></a></p>
+        <p> <a href="inscription.php"></a><?= $textes['link_no_account'] ?></p>
         <p><a href="../index.php"><?= $textes['link_home'] ?></a></p>
     </main>
 </body>
