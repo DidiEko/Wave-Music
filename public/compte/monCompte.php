@@ -1,4 +1,7 @@
 <?php
+// Include language tool
+require_once __DIR__ . '/../../src/outils/gestion_langue.php';
+
 session_start();
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
@@ -41,30 +44,30 @@ $user = $stmt->fetch();
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="../css/compte.css">
-    <title>Mon compte</title>
+    <title><?= $textes['account_title'] ?></title>
 </head>
 
 <body>
     <?php include '../nav/nav.php'; ?>
 
     <main class="container">
-        <h1>Mon compte</h1>
+        <h1><?= $textes['account_title'] ?></h1>
 
         <?php if ($user): ?>
             <table>
                 <thead>
                     <tr>
-                        <th>Email</th>
-                        <th>Nom d'utilisateur</th>
-                        <th>Âge</th>
-                        <th>Mot de passe</th>
+                        <th><?= $textes['th_email'] ?></th>
+                        <th><?= $textes['th_user'] ?></th>
+                        <th><?= $textes['th_age'] ?></th>
+                        <th><?= $textes['th_pass'] ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,12 +81,12 @@ $user = $stmt->fetch();
             </table>
 
         <?php else: ?>
-            <p>Aucune donnée trouvée pour cet utilisateur.</p>
+            <p><?= $textes['msg_no_data'] ?></p>
         <?php endif; ?>
 
-        <p><a href="modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
+        <p><a href="modifier_mdp.php"><button><?= $textes['btn_mod_pass'] ?></button></a></p>
 
-        <p><a href="../auth/deconnexion.php"><button>Se déconnecter</button></a></p>
+        <p><a href="../auth/deconnexion.php"><button><?= $textes['btn_logout_acc'] ?></button></a></p>
     </main>
 </body>
 

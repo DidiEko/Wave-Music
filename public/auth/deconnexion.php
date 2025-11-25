@@ -1,4 +1,7 @@
 <?php
+// Include language tool
+require_once __DIR__ . '/../../src/outils/gestion_langue.php';
+
 session_start();
 
 $userId = $_SESSION['user_id'] ?? null;
@@ -11,24 +14,24 @@ if (!$userId) {
 session_destroy();
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../css/auth.css">
-    <title>Déconnexion | Gestion des sessions</title>
+    <link rel="stylesheet" href="../css/auth.css">
+    <title><?= $textes['logout_title'] ?> | Gestion des sessions</title>
 </head>
 
 <body>
 
     <?php include '../nav/nav.php'; ?>
     <main class="container">
-        <h1>Déconnexion réussie</h1>
+        <h1><?= $textes['logout_title'] ?></h1>
 
-        <p>Vous avez été déconnecté.e avec succès.</p>
+        <p><?= $textes['logout_msg'] ?></p>
 
-        <p><a href="../index.php">Retour à l'accueil</a> | <a href="connexion.php">Se connecter à nouveau</a></p>
+        <p><a href="../index.php"><?= $textes['link_home'] ?></a> | <a href="connexion.php"><?= $textes['link_login_again'] ?></a></p>
     </main>
 </body>
 

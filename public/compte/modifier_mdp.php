@@ -1,4 +1,6 @@
 <?php
+// Include language tool
+require_once __DIR__ . '/../../src/outils/gestion_langue.php';
 
 require_once __DIR__ . '/../../src/outils/autoloader.php';
 
@@ -25,44 +27,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm = $_POST['confirm_mdp'] ?? '';
 
     if ($nouveau !== $confirm) {
-        $message = "<p style='color:red;'>Les mots de passe ne correspondent pas.</p>";
+        $message = "<p style='color:red;'>" . $textes['err_pass_match'] . "</p>";
     } elseif (strlen($nouveau) < 8) {
-        $message = "<p style='color:red;'>Le mot de passe doit contenir au moins 8 caractères.</p>";
+        $message = "<p style='color:red;'>" . $textes['err_pass_len'] . "</p>";
     } else {
         // Appelle la méthode du manager
         $ok = $manager->updatePassword($_SESSION['user_id'], $nouveau);
         $message = $ok
-            ? "<p style='color:green;'>Mot de passe mis à jour avec succès ✅</p>"
-            : "<p style='color:red;'>Erreur lors de la mise à jour du mot de passe.</p>";
+            ? "<p style='color:green;'>" . $textes['msg_pass_ok'] . "</p>"
+            : "<p style='color:red;'>" . $textes['err_pass_fail'] . "</p>";
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 <head>
     <meta charset="UTF-8">
-    <title>Modifier mon mot de passe</title>
+    <title><?= $textes['mod_pass_title'] ?></title>
     <link rel="stylesheet" href="../css/compte.css">
 </head>
 <body>
     <?php include '../nav/nav.php'; ?>
     <main class="container">
-        <h1>Modifier mon mot de passe</h1>
+        <h1><?= $textes['mod_pass_title'] ?></h1>
 
         <?= $message ?>
 
         <form method="POST">
-            <label for="nouveau_mdp">Nouveau mot de passe</label>
+            <label for="nouveau_mdp"><?= $textes['label_new_pass'] ?></label>
             <input type="password" id="nouveau_mdp" name="nouveau_mdp" required minlength="8">
 
-            <label for="confirm_mdp">Confirmer le mot de passe</label>
+            <label for="confirm_mdp"><?= $textes['label_conf_pass'] ?></label>
             <input type="password" id="confirm_mdp" name="confirm_mdp" required minlength="8">
 
-            <button type="submit">Mettre à jour</button>
+            <button type="submit"><?= $textes['btn_update'] ?></button>
         </form>
 
-        <p><a href="../index.php">⬅ Retour à mon compte</a></p>
+        <p><a href="../index.php"><?= $textes['link_back_acc'] ?></a></p>
     </main>
 </body>
 </html>

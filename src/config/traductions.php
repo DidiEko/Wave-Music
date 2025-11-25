@@ -40,7 +40,49 @@ $translations = [
         'link_no_account' => 'Pas encore de compte ? Créer un compte',
         'link_home'       => "Retour à l'accueil",
         'error_fields'    => 'Tous les champs sont obligatoires.',
-        'error_login'     => "Nom d'utilisateur ou mot de passe incorrect."
+        'error_login'     => "Nom d'utilisateur ou mot de passe incorrect.",
+
+        // --- LOGOUT (DECONNEXION) ---
+        'logout_title'    => 'Déconnexion réussie',
+        'logout_msg'      => 'Vous avez été déconnecté.e avec succès.',
+        'link_login_again'=> 'Se connecter à nouveau',
+
+        // --- REGISTER (INSCRIPTION) ---
+        'register_title'      => 'Créer un compte',
+        'label_email'         => 'E-mail',
+        'label_age'           => 'Âge',
+        'btn_register'        => 'Créer mon compte',
+        'link_already_acc'    => 'Vous avez déjà un compte ?',
+        'link_login_now'      => 'Se connecter maintenant',
+        'reg_success'         => 'Compte créé avec succès ! Vous pouvez maintenant vous connecter.',
+        'reg_email_sent'      => "Un email de bienvenue t'a été envoyé 🎉",
+        'err_email_taken'     => "Cet email est déjà utilisé.",
+        'err_user_taken'      => "Ce nom d'utilisateur est déjà pris.",
+        'err_email_invalid'   => "Un email valide est requis.",
+        'err_user_short'      => "Le nom d'utilisateur doit contenir au moins 2 caractères.",
+        'err_age_invalid'     => "L'âge doit être un nombre positif.",
+        'err_pass_short'      => "Le mot de passe doit contenir au moins 8 caractères.",
+
+        // --- ACCOUNT (MON COMPTE) ---
+        'account_title'   => 'Mon compte',
+        'th_email'        => 'Email',
+        'th_user'         => "Nom d'utilisateur",
+        'th_age'          => 'Âge',
+        'th_pass'         => 'Mot de passe',
+        'msg_no_data'     => 'Aucune donnée trouvée pour cet utilisateur.',
+        'btn_mod_pass'    => 'Modifier mon mot de passe',
+        'btn_logout_acc'  => 'Se déconnecter',
+
+        // --- MODIFY PASSWORD (MODIFIER MDP) ---
+        'mod_pass_title'  => 'Modifier mon mot de passe',
+        'label_new_pass'  => 'Nouveau mot de passe',
+        'label_conf_pass' => 'Confirmer le mot de passe',
+        'btn_update'      => 'Mettre à jour',
+        'link_back_acc'   => '⬅ Retour à mon compte',
+        'err_pass_match'  => 'Les mots de passe ne correspondent pas.',
+        'err_pass_len'    => 'Le mot de passe doit contenir au moins 8 caractères.',
+        'msg_pass_ok'     => 'Mot de passe mis à jour avec succès ✅',
+        'err_pass_fail'   => 'Erreur lors de la mise à jour du mot de passe.'
     ],
     'en' => [
         // --- NAVIGATION ---
@@ -82,7 +124,49 @@ $translations = [
         'link_no_account' => 'No account? Create one',
         'link_home'       => 'Back to Home',
         'error_fields'    => 'All fields are required.',
-        'error_login'     => 'Incorrect username or password.'
+        'error_login'     => 'Incorrect username or password.',
+
+        // --- LOGOUT ---
+        'logout_title'    => 'Logout Successful',
+        'logout_msg'      => 'You have been successfully logged out.',
+        'link_login_again'=> 'Log in again',
+
+        // --- REGISTER ---
+        'register_title'      => 'Create an Account',
+        'label_email'         => 'Email',
+        'label_age'           => 'Age',
+        'btn_register'        => 'Create My Account',
+        'link_already_acc'    => 'Already have an account?',
+        'link_login_now'      => 'Log in now',
+        'reg_success'         => 'Account created successfully! You can now log in.',
+        'reg_email_sent'      => "A welcome email has been sent to you 🎉",
+        'err_email_taken'     => "This email is already in use.",
+        'err_user_taken'      => "This username is already taken.",
+        'err_email_invalid'   => "A valid email is required.",
+        'err_user_short'      => "Username must be at least 2 characters long.",
+        'err_age_invalid'     => "Age must be a positive number.",
+        'err_pass_short'      => "Password must be at least 8 characters long.",
+
+        // --- ACCOUNT ---
+        'account_title'   => 'My Account',
+        'th_email'        => 'Email',
+        'th_user'         => 'Username',
+        'th_age'          => 'Age',
+        'th_pass'         => 'Password',
+        'msg_no_data'     => 'No data found for this user.',
+        'btn_mod_pass'    => 'Change My Password',
+        'btn_logout_acc'  => 'Logout',
+
+        // --- MODIFY PASSWORD ---
+        'mod_pass_title'  => 'Change My Password',
+        'label_new_pass'  => 'New Password',
+        'label_conf_pass' => 'Confirm Password',
+        'btn_update'      => 'Update',
+        'link_back_acc'   => '⬅ Back to My Account',
+        'err_pass_match'  => 'Passwords do not match.',
+        'err_pass_len'    => 'Password must be at least 8 characters long.',
+        'msg_pass_ok'     => 'Password updated successfully ✅',
+        'err_pass_fail'   => 'Error updating password.'
     ]
 ];
 ?>

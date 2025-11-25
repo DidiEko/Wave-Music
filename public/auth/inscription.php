@@ -1,4 +1,6 @@
 <?php
+// Include language tool
+require_once __DIR__ . '/../../src/outils/gestion_langue.php';
 
 require_once __DIR__ . '/../../src/outils/autoloader.php';
 
@@ -42,19 +44,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $errors = [];
 
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "Un email valide est requis.";
+        $errors[] = $textes['err_email_invalid'];
     }
 
     if (empty($nom_utilisateur) || strlen($nom_utilisateur) < 2) {
-        $errors[] = "Le nom d'utilisateur doit contenir au moins 2 caractères.";
+        $errors[] = $textes['err_user_short'];
     }
 
     if ($age < 0) {
-        $errors[] = "L'âge doit être un nombre positif.";
+        $errors[] = $textes['err_age_invalid'];
     }
 
     if (strlen($mot_de_passe) < 8) {
-        $errors[] = "Le mot de passe doit contenir au moins 8 caractères.";
+        $errors[] = $textes['err_pass_short'];
     }
 
     if (empty($errors)) {
@@ -73,9 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($existing) {
             if ($existing['email'] === $email) {
-                $error = "Cet email est déjà utilisé.";
+                $error = $textes['err_email_taken'];
             } elseif ($existing['nom_utilisateur'] === $nom_utilisateur) {
-                $error = "Ce nom d'utilisateur est déjà pris.";
+                $error = $textes['err_user_taken'];
             }
         }
 
@@ -92,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->bindValue(':mot_de_passe', $mot_de_passe);
             $stmt->execute();
 
-            $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
+            $success = $textes['reg_success'];
 
 
             if ($success) {
@@ -127,9 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $mail->Username = $username;
                     $mail->Password = $password;
 
-                    // // ⭐ POUR VOIR SI UNE ERREUR APPARAÎT (à enlever ensuite)
-                    // $mail->SMTPDebug = 2;
-                    // $mail->Debugoutput = 'html';
+        
 
                     $mail->CharSet = "UTF-8";
                     $mail->Encoding = "base64";
@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     // Envoi
                     $mail->send();
 
-                    $success = "Un email de bienvenue t'a été envoyé 🎉";
+                    $success = $textes['reg_email_sent'];
                 } catch (Exception $e) {
                     $error = "Erreur lors de l'envoi du mail : {$mail->ErrorInfo}";
                 }
@@ -161,19 +161,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= $langue ?>">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/auth.css">
-    <title>Créer un compte</title>
+    <title><?= $textes['register_title'] ?></title>
 </head>
 
 <body>
     <?php include '../nav/nav.php'; ?>
     <main class="container">
-        <h1>Créer un compte</h1>
+        <h1><?= $textes['register_title'] ?></h1>
 
         <?php if (!empty($error)): ?>
             <p style="color: red; font-weight: bold; margin-top: 10px;">
@@ -182,31 +182,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php endif; ?>
 
         <form action="" method="POST">
-            <label for="email">E-mail</label>
+            <label for="email"><?= $textes['label_email'] ?></label>
             <input type="email" id="email" name="email" required>
 
-            <label for="nom_utilisateur">Nom d'utilisateur</label>
+            <label for="nom_utilisateur"><?= $textes['label_user'] ?></label>
             <input type="text" id="nom_utilisateur" name="nom_utilisateur" required minlength="2">
 
-            <label for="age">Âge</label>
+            <label for="age"><?= $textes['label_age'] ?></label>
             <input type="number" id="age" name="age" required min="1">
 
-            <label for="mot_de_passe">Mot de passe</label>
+            <label for="mot_de_passe"><?= $textes['label_password'] ?></label>
             <input type="password" id="mot_de_passe" name="mot_de_passe" required minlength="8">
 
-            <button type="submit">Créer mon compte</button>
+            <button type="submit"><?= $textes['btn_register'] ?></button>
         </form>
 
         <?php if (!$success): ?>
-            <p>Vous avez déjà un compte ? <a href="connexion.php">Se connecter</a></p>
+            <p><?= $textes['link_already_acc'] ?> <a href="connexion.php"><?= $textes['link_login'] ?></a></p>
         <?php endif; ?>
 
 
         <?php if ($success): ?>
             <p style="color: green;"><strong><?= $success ?></strong></p>
-            <p><a href="connexion.php">Se connecter maintenant</a></p>
+            <p><a href="connexion.php"><?= $textes['link_login_now'] ?></a></p>
         <?php endif; ?>
-        <p><a href="../index.php">Retour à l'accueil</a></p>
+        <p><a href="../index.php"><?= $textes['link_home'] ?></a></p>
     </main>
 </body>
 
