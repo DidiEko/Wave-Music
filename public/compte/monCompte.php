@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../../src/outils/gestion_langue.php';
 session_start();
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
@@ -56,16 +55,16 @@ $user = $stmt->fetch();
     <?php include '../nav/nav.php'; ?>
 
     <main class="container">
-        <h1><?= $textes['account_title'] ?></h1>
+        <h1>Mon compte</h1>
 
         <?php if ($user): ?>
             <table>
                 <thead>
                     <tr>
-                        <th><?= $textes['label_email'] ?></th>
-                        <th><?= $textes['label_user'] ?></th>
-                        <th><?= $textes['label_age'] ?></th>
-                        <th><?= $textes['label_password'] ?></th>
+                        <th>Email</th>
+                        <th>Nom d'utilisateur</th>
+                        <th>Âge</th>
+                        <th>Mot de passe</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,9 +81,9 @@ $user = $stmt->fetch();
             <p>Aucune donnée trouvée pour cet utilisateur.</p>
         <?php endif; ?>
 
-        <p><a href="modifier_mdp.php"><button><?= $textes['btn_edit_pwd'] ?></button></a></p>
+        <p><a href="modifier_mdp.php"><button>Modifier mon mot de passe</button></a></p>
 
-        <p><a href="../auth/deconnexion.php"><button><?= $textes['btn_logout'] ?></button></a></p>
+        <p><a href="../auth/deconnexion.php"><button>Se déconnecter</button></a></p>
     </main>
 </body>
 
