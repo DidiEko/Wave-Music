@@ -1,12 +1,12 @@
 <?php
-// Note path is ../../src
+// Notez que le chemin remonte de deux niveaux (../../)
 require_once __DIR__ . '/../../src/outils/gestion_langue.php';
 
 const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    header('Location: ../index.php'); // Fixed path
+    header('Location: ../index.php');
     exit();
 }
 
@@ -16,7 +16,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mot_de_passe    = $_POST["mot_de_passe"] ?? '';
 
     if (empty($nom_utilisateur) || empty($mot_de_passe)) {
-        $error = $textes['error_fields'];
+        // Utilise le texte d'erreur traduit ou une valeur par défaut
+        $error = $textes['error_fields'] ?? 'Tous les champs sont requis.';
     } else {
         try {
             $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
@@ -33,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 header('Location: ../index.php');
                 exit();
             } else {
-                $error = $textes['error_login'];
+                $error = $textes['error_login'] ?? 'Login incorrect.';
             }
         } catch (PDOException $e) {
             $error = 'Erreur lors de la connexion : ' . $e->getMessage();
@@ -55,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <h1><?= $textes['login_title'] ?></h1>
 
         <?php if (!empty($error)): ?>
-            <article style="background-color: var(--pico-del-color);">
+            <article style="background-color: #330000; padding: 10px; border-radius: 5px; color: #ff7777; border: 1px solid #660000;">
                 <p><strong>Erreur :</strong> <?= htmlspecialchars($error) ?></p>
             </article>
         <?php endif; ?>
@@ -74,7 +75,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <button type="submit"><?= $textes['btn_connect'] ?></button>
         </form>
 
-        <p><?= $textes['link_no_account'] ?> <a href="inscription.php"></a></p>
+        <p><a href="inscription.php"><?= $textes['link_no_account'] ?></a></p>
+        
         <p><a href="../index.php"><?= $textes['link_home'] ?></a></p>
     </main>
 </body>
