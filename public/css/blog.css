@@ -41,6 +41,8 @@ nav .nav-links a:hover {
     color: #4da6ff;           /* Change la couleur au survol */
 }
 
+
+
 /* Conteneur principal */
 .blog-page {
     max-width: 750px;
@@ -112,18 +114,13 @@ nav .nav-links a:hover {
     opacity: 0.9;
 }
 
-/* ------------------------------
-   Responsive
-   ------------------------------ */
-
-@media (max-width: 480px) {
-    .blog-page {
-        padding: 0.8rem;
-    }
-    .blog-post {
-        padding: 1.1rem;
-    }
-    .post-title {
-        font-size: 1.15rem;
-    }
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background: #1a1a1a;
+    color: #777;
+    font-size: 0.9rem;
 }
+

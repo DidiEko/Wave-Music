@@ -83,8 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (empty($error)) {
 
             // Insertion dans la base 
-            $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe)
-            VALUES (:email, :nom_utilisateur, :age, :mot_de_passe)";
+            $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe, role)
+            VALUES (:email, :nom_utilisateur, :age, :mot_de_passe, 'user')";
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':email', $email);
             $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
