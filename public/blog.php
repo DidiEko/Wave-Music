@@ -53,6 +53,7 @@ $isAdmin = ($_SESSION['role'] ?? '') === 'admin';
 
         <h1 class="blog-title"> 🔥 SCOOPS & EXCLUS RAP</h1>
 
+        <?php if ($isAdmin): ?>
         <section class="admin-panel">
             <h2 class="admin-title">🛠 Publier un article</h2>
 
@@ -71,6 +72,7 @@ $isAdmin = ($_SESSION['role'] ?? '') === 'admin';
                 <button class="admin-btn" type="submit">Publier l’article 🚀</button>
             </form>
         </section>
+        <?php endif; ?>
 
 
         <?php

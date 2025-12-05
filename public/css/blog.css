@@ -1,126 +1,196 @@
-/* ------------------------------
-   BLOG WAVE – TWITTER STYLE DARK
-   ------------------------------ */
+/* ---------------------------------------
+   🌊 WAVE MUSIC — BLOG DARK NEON THEME
+----------------------------------------*/
 
-body {
-    background: #0d0d0d;
-    color: #ffffff;
-    font-family: system-ui, sans-serif;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Navigation */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #0b0b0b;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* ---------------------------------------
+   🔝 NAVIGATION
+----------------------------------------*/
 nav {
-    display: flex;                 /* Utilise Flexbox pour aligner les éléments */
-    justify-content: space-between; /* Espace entre logo et liens */
-    align-items: center;           /* Centre verticalement les éléments */
-    padding: 15px 40px;            /* Espacement interne du nav */
-    background: #1a1a1a;           /* Fond sombre */
-    position: sticky;              /* Reste visible en scrollant */
-    top: 0;                         /* Position en haut de la page */
-    z-index: 1000;                  /* Priorité au-dessus des autres éléments */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(12, 12, 12, 0.9);
+    backdrop-filter: blur(8px);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 999;
+    border-bottom: 1px solid #1c1c1c;
 }
 
-/* Logo dans la navigation */
-nav .logo {
-    font-size: 1.5em;      /* Taille du texte du logo */
-    font-weight: bold;      /* Texte en gras */
-    color: #4da6ff;        /* Couleur bleue */
+nav a {
+    color: #dadada;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: 500;
+    transition: 0.2s;
 }
 
-/* Liens de navigation */
-nav .nav-links a {
-    margin-left: 20px;        /* Espace entre les liens */
-    text-decoration: none;    /* Supprime le soulignement */
-    color: #eee;              /* Couleur texte blanche */
-    font-weight: 500;         /* Poids moyen */
-    transition: color 0.3s;   /* Animation lors du survol */
-}
-nav .nav-links a:hover {
-    color: #4da6ff;           /* Change la couleur au survol */
+nav a:hover {
+    color: #4da6ff;
 }
 
-
-
-/* Conteneur principal */
+/* ---------------------------------------
+   📝 PAGE BLOG
+----------------------------------------*/
 .blog-page {
-    max-width: 750px;
-    margin: 2rem auto;
-    padding: 1.2rem;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
 /* Titre principal */
 .blog-title {
-    font-size: 2.2rem;
-    font-weight: 800;
-    margin-bottom: 0.3rem;
-    background: linear-gradient(90deg, #9146ff, #1da1f2);
-    -webkit-text-fill-color: transparent;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    /* Dégradé Wave */
+    background: linear-gradient(90deg, #4da6ff, #9146ff);
+
+    text-shadow: 0 0 20px #4da6ff33;
 }
 
+/* Sous-titre */
 .blog-intro {
+    font-size: 1.15rem;
     opacity: 0.75;
-    margin-bottom: 2rem;
-    font-size: 1.1rem;
+    margin-bottom: 35px;
+    line-height: 1.5;
 }
 
-/* ------------------------------
-   CARDS (style Twitter avec glow)
-   ------------------------------ */
+/* ---------------------------------------
+   🛠 ZONE ADMIN
+----------------------------------------*/
+.admin-panel {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 14px;
+    padding: 20px 25px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 25px #4da6ff20;
+}
 
-.blog-posts {
+.admin-title {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #4da6ff, #b47cff);
+}
+
+.admin-form {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 18px;
 }
 
-.blog-post {
-    background: #141414;
-    border: 1px solid #2c2c2c;
-    padding: 1.4rem 1.6rem;
-    border-radius: 20px;
-    transition: transform 0.15s ease, background 0.2s ease,
-                border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Hover inspiré Twitter */
-.blog-post:hover {
-    transform: translateY(-3px);
-    background: #181818;
-    border-color: #3f3f3f;
-    box-shadow: 0 0 15px #9146ff25;
-}
-
-/* Titres des posts */
-.post-title {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-    color: #fff;
-}
-
-/* Métadonnées */
-.post-meta {
-    font-size: 0.9rem;
-    opacity: 0.65;
-    margin-bottom: 0.7rem;
-}
-
-/* Contenu */
-.post-content {
-    line-height: 1.6;
-    font-size: 1rem;
+.admin-field label {
+    font-size: 0.95rem;
     opacity: 0.9;
 }
 
-/* FOOTER */
+/* Inputs */
+.admin-field input,
+.admin-field textarea {
+    background: #181818;
+    border: 1px solid #2c2c2c;
+    color: white;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.admin-field input:focus,
+.admin-field textarea:focus {
+    border-color: #4da6ff;
+}
+
+/* Bouton publier */
+.admin-btn {
+    background: linear-gradient(90deg, #4da6ff, #9146ff);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease-in-out;
+    box-shadow: 0 0 15px #4da6ff40;
+}
+
+.admin-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px #9146ff60;
+}
+
+/* ---------------------------------------
+   📄 POSTS
+----------------------------------------*/
+.blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.blog-post {
+    background: #131313;
+    border: 1px solid #242424;
+    padding: 22px 28px;
+    border-radius: 18px;
+    transition: 0.25s ease;
+    box-shadow: 0 0 15px #00000050;
+}
+
+.blog-post:hover {
+    transform: translateY(-4px);
+    border-color: #4da6ff60;
+    box-shadow: 0 0 20px #4da6ff25;
+}
+
+.post-title {
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.post-meta {
+    font-size: 0.85rem;
+    opacity: 0.65;
+    margin-bottom: 12px;
+}
+
+.post-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    opacity: 0.92;
+}
+
+/* ---------------------------------------
+   🦶 FOOTER
+----------------------------------------*/
 footer {
     text-align: center;
+    margin-top: 50px;
     padding: 20px;
-    margin-top: 40px;
-    background: #1a1a1a;
+    background: #0f0f0f;
+    border-top: 1px solid #1a1a1a;
     color: #777;
     font-size: 0.9rem;
 }
-
