@@ -32,7 +32,12 @@ nav {
     border-bottom: 1px solid #1c1c1c;
 }
 
-/* rajouter css pour logo */
+nav .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #4da6ff;
+}
+
 nav a {
     color: #dadada;
     text-decoration: none;
