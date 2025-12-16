@@ -76,7 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($existing) {
             if ($existing['email'] === $email) {
                 $error = "Cet email est déjà utilisé.";
-            } elseif ($existing['nom_utilisateur'] === $nom_utilisateur) {
+            }
+            if ($existing['nom_utilisateur'] === $nom_utilisateur) {
                 $error = "Ce nom d'utilisateur est déjà pris.";
             }
         }
