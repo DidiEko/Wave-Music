@@ -37,7 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $nom_utilisateur = $_POST["nom_utilisateur"];
     $age = $_POST["age"];
-    $mot_de_passe = $_POST["mot_de_passe"];
+    $mot_de_passe = password_hash($_POST['mot_de_passe'], PASSWORD_DEFAULT);
+
 
     $errors = [];
 

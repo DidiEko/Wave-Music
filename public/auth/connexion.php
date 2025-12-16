@@ -39,7 +39,7 @@
                 $user = $stmt->fetch();
 
                 // Vérifier le mot de passe
-                if ($user && $mot_de_passe === $user['mot_de_passe']) {
+                if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
                         $_SESSION['role'] = $user['role']; 
