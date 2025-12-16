@@ -37,7 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST["email"];
     $nom_utilisateur = $_POST["nom_utilisateur"];
     $age = $_POST["age"];
-    $mot_de_passe = $_POST["mot_de_passe"];
+    $mot_de_passe = $_POST['mot_de_passe'];
+    $mot_de_passe_hash = password_hash($mot_de_passe, PASSWORD_DEFAULT);
+
 
     $errors = [];
 
@@ -74,7 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($existing) {
             if ($existing['email'] === $email) {
                 $error = "Cet email est déjà utilisé.";
-            } elseif ($existing['nom_utilisateur'] === $nom_utilisateur) {
+            }
+            if ($existing['nom_utilisateur'] === $nom_utilisateur) {
                 $error = "Ce nom d'utilisateur est déjà pris.";
             }
         }
@@ -83,16 +86,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (empty($error)) {
 
             // Insertion dans la base 
-            $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe)
-            VALUES (:email, :nom_utilisateur, :age, :mot_de_passe)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':email', $email);
-            $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
-            $stmt->bindValue(':age', $age);
-            $stmt->bindValue(':mot_de_passe', $mot_de_passe);
-            $stmt->execute();
+            $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe, role)
+            VALUES (:email, :nom_utilisateur, :age, :mot_de_passe, 'user')";
 
-            $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
+            try {
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindValue(':email', $email);
+                $stmt->bindValue(':nom_utilisateur', $nom_utilisateur);
+                $stmt->bindValue(':age', $age);
+                $stmt->bindValue(':mot_de_passe', $mot_de_passe_hash);
+                $stmt->execute();
+
+                $success = "Compte créé avec succès ! Vous pouvez maintenant vous connecter.";
+            } catch (PDOException $e) {
+
+                if ($e->getCode() === '23000') {
+                    // Contrainte UNIQUE violée
+                    if (str_contains($e->getMessage(), 'nom_utilisateur')) {
+                        $error = "Ce nom d'utilisateur est déjà pris.";
+                    } elseif (str_contains($e->getMessage(), 'email')) {
+                        $error = "Cet email est déjà utilisé.";
+                    } else {
+                        $error = "Compte déjà existant.";
+                    }
+                } else {
+                    throw $e; 
+                }
+            }
 
 
             if ($success) {

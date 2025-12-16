@@ -21,15 +21,21 @@ $manager = new UserManager();
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $ancien = $_POST['ancien_mdp'] ?? '';
     $nouveau = $_POST['nouveau_mdp'] ?? '';
     $confirm = $_POST['confirm_mdp'] ?? '';
 
-    if ($nouveau !== $confirm) {
+    $user = $manager->getUserById($_SESSION['user_id']);
+
+    if (!$user) {
+        $message = "<p style='color:red;'>Utilisateur introuvable.</p>";
+    } elseif (!password_verify($ancien, $user['mot_de_passe'])) {
+        $message = "<p style='color:red;'>Mot de passe actuel incorrect.</p>";
+    } elseif ($nouveau !== $confirm) {
         $message = "<p style='color:red;'>Les mots de passe ne correspondent pas.</p>";
     } elseif (strlen($nouveau) < 8) {
         $message = "<p style='color:red;'>Le mot de passe doit contenir au moins 8 caractères.</p>";
     } else {
-        // Appelle la méthode du manager
         $ok = $manager->updatePassword($_SESSION['user_id'], $nouveau);
         $message = $ok
             ? "<p style='color:green;'>Mot de passe mis à jour avec succès ✅</p>"
@@ -40,11 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Modifier mon mot de passe</title>
     <link rel="stylesheet" href="../css/compte.css">
 </head>
+
 <body>
     <?php include '../nav/nav.php'; ?>
     <main class="container">
@@ -53,6 +61,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?= $message ?>
 
         <form method="POST">
+
+            <label for="ancien_mdp">Ancien mot de passe</label>
+            <input type="password" id="ancien_mdp" name="ancien_mdp" required minlength="8">
+
             <label for="nouveau_mdp">Nouveau mot de passe</label>
             <input type="password" id="nouveau_mdp" name="nouveau_mdp" required minlength="8">
 
@@ -65,4 +77,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p><a href="../index.php">⬅ Retour à mon compte</a></p>
     </main>
 </body>
+
 </html>

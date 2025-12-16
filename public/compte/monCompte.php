@@ -64,7 +64,7 @@ $user = $stmt->fetch();
                         <th>Email</th>
                         <th>Nom d'utilisateur</th>
                         <th>Âge</th>
-                        <th>Mot de passe</th>
+                        <th>Mot de passe HASHÉ</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -1,20 +1,15 @@
     <?php
-    // Constantes
     const DATABASE_CONFIGURATION_FILE = __DIR__ . '/../../src/config/database.ini';
 
-    // Démarre la session
     session_start();
 
-    // Si l'utilisateur est déjà connecté, le rediriger vers l'accueil
     if (isset($_SESSION['user_id'])) {
         header('Location: ././index.php');
         exit();
     }
 
-    // Initialise les variables
     $error = '';
 
-    // Traite le formulaire de connexion
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $nom_utilisateur = $_POST["nom_utilisateur"] ?? '';
         $mot_de_passe   = $_POST["mot_de_passe"] ?? '';
@@ -23,7 +18,7 @@
             $error = 'Tous les champs sont obligatoires.';
         } else {
             try {
-                // 1) Lire la config (définit $host, $port, $dbname, $username, $password)
+                // Lire la config ($host, $port, $dbname, $username, $password)
                 $config = parse_ini_file(DATABASE_CONFIGURATION_FILE, true);
                 if (!$config || !isset($config['database'])) {
                     throw new Exception("Impossible de lire la configuration DB.");
@@ -35,27 +30,24 @@
                 $username = $db['username'];
                 $password = $db['password'];
 
-                // 2) Connexion PDO
+                // Connexion PDO
                 $pdo = new PDO("mysql:host=$host;port=$port;dbname=$dbname;charset=utf8mb4", $username, $password);
 
-                // 3) Récupérer l'utilisateur par nom_utilisateur
+                //Récupérer l'utilisateur par nom_utilisateur
                 $stmt = $pdo->prepare('SELECT * FROM utilisateurs_wave WHERE nom_utilisateur = :nom_utilisateur');
                 $stmt->execute(['nom_utilisateur' => $nom_utilisateur]);
                 $user = $stmt->fetch();
 
-                // 4) Vérifier le mot de passe
-                // VERSION SANS HASH (comme vu en cours) :
-                if ($user && $mot_de_passe === $user['mot_de_passe']) {
+                // Vérifier le mot de passe
+                if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
+                        $_SESSION['role'] = $user['role']; 
                     header('Location: ../index.php');
                     exit();
                 } else {
                     $error = "Nom d'utilisateur ou mot de passe incorrect.";
                 }
-
-                // --- Si un jour tu passes aux mots de passe hachés, remplace la comparaison par :
-                // if ($user && password_verify($mot_de_passe, $user['mot_de_passe'])) { ... }
 
             } catch (PDOException $e) {
                 $error = 'Erreur lors de la connexion : ' . $e->getMessage();

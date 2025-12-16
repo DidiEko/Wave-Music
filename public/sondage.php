@@ -44,29 +44,51 @@ $musics = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Traitement du vote
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
-    
+
     $classement = $_POST["classement"]; // tableau : musique_id => position
 
-    // Vérifier s'il y a bien 10 positions
-    if (count($classement) === 10) {
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
 
-        // Enregistre chaque musique & position
-        $insert = $pdo->prepare("
-            INSERT INTO classement_utilisateur (user_id, musique_id, position)
-            VALUES (:user_id, :musique_id, :position)
-        ");
+        $classement = $_POST["classement"] ?? [];
 
-        foreach ($classement as $musiqueId => $position) {
-            $insert->execute([
-                'user_id' => $userId,
-                'musique_id' => $musiqueId,
-                'position' => $position
-            ]);
+        // 1️⃣ Vérifie que toutes les musiques ont une position
+        if (count($classement) !== 10) {
+            $message = "<p style='color:red; text-align:center;'>
+            ❌ Tu dois attribuer une position à chaque musique.
+        </p>";
+        } else {
+
+            // 2️⃣ Récupère uniquement les positions
+            $positions = array_values($classement);
+
+            // 3️⃣ Vérifie qu'elles sont uniques
+            if (count($positions) !== count(array_unique($positions))) {
+
+                $message = "<p style='color:red; text-align:center;'>
+                ❌ Chaque position (1 à 10) doit être utilisée une seule fois.
+            </p>";
+            } else {
+
+                // 4️⃣ INSERT OK
+                $insert = $pdo->prepare("
+                INSERT INTO classement_utilisateur (user_id, musique_id, position)
+                VALUES (:user_id, :musique_id, :position)
+            ");
+
+                foreach ($classement as $musiqueId => $position) {
+                    $insert->execute([
+                        'user_id'    => $userId,
+                        'musique_id' => $musiqueId,
+                        'position'  => $position
+                    ]);
+                }
+
+                $aDejaVote = true;
+                $message = "<p style='color:lightgreen; text-align:center;'>
+                ✅ Ton classement a été enregistré !
+            </p>";
+            }
         }
-
-        // Mise à jour du flag pour ne plus réafficher le formulaire
-        $aDejaVote = true;
-        $message = "<p style='color:lightgreen; text-align:center;'>Ton classement a été enregistré !</p>";
     }
 }
 ?>
@@ -84,57 +106,58 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$aDejaVote) {
 
 <body>
 
-<?php include 'nav/nav.php'; ?>
+    <?php include 'nav/nav.php'; ?>
 
-<div class="container">
-    <h1>🎵 Classe ton Top 10</h1>
+    <div class="container">
+        <h1>🎵 Classe ton Top 10</h1>
 
-    <?php if (isset($message)) echo $message; ?>
+        <?php if (isset($message)) echo $message; ?>
 
-    <?php if (!$aDejaVote): ?>
-        <form method="post">
+        <?php if (!$aDejaVote): ?>
+            <form method="post">
 
-            <table class="table-classement">
-                <tr>
-                    <th>Ordre</th>
-                    <th>Titre</th>
-                    <th>Artiste</th>
-                    <th>Clip</th>
-                </tr>
+                <table class="table-classement">
+                    <tr>
+                        <th>Ordre</th>
+                        <th>Titre</th>
+                        <th>Artiste</th>
+                        <th>Clip</th>
+                    </tr>
 
-                <?php foreach ($musics as $music): ?>
-                <tr>
-                    <td>
-                        <select name="classement[<?= $music['id'] ?>]" required>
-                            <option value="">--</option>
-                            <?php for ($i = 1; $i <= 10; $i++): ?>
-                                <option value="<?= $i ?>"><?= $i ?></option>
-                            <?php endfor; ?>
-                        </select>
-                    </td>
-                    <td><?= htmlspecialchars($music['titre']) ?></td>
-                    <td><?= htmlspecialchars($music['nom_artiste']) ?></td>
-                    <td>
-                        <a href="<?= htmlspecialchars($music['lien_youtube']) ?>" target="_blank">▶️ Voir</a>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </table>
+                    <?php foreach ($musics as $music): ?>
+                        <tr>
+                            <td>
+                                <select name="classement[<?= $music['id'] ?>]" required>
+                                    <option value="">--</option>
+                                    <?php for ($i = 1; $i <= 10; $i++): ?>
+                                        <option value="<?= $i ?>"><?= $i ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </td>
+                            <td><?= htmlspecialchars($music['titre']) ?></td>
+                            <td><?= htmlspecialchars($music['nom_artiste']) ?></td>
+                            <td>
+                                <a href="<?= htmlspecialchars($music['lien_youtube']) ?>" target="_blank">▶️ Voir</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
 
-            <button type="submit" class="btn">💾 Enregistrer</button>
-        </form>
+                <button type="submit" class="btn">💾 Enregistrer</button>
+            </form>
 
-    <?php else: ?>
-        <p style="text-align:center; color:#bbb; margin-top:20px;">
-            ⭐ Tu as déjà voté ! Merci pour ta participation ⭐
-        </p>
-    <?php endif; ?>
+        <?php else: ?>
+            <p style="text-align:center; color:#bbb; margin-top:20px;">
+                ⭐ Tu as déjà voté ! Merci pour ta participation ⭐
+            </p>
+        <?php endif; ?>
 
-</div>
+    </div>
 
-<footer>
-    &copy; 2025 WAVE - Tous droits réservés
-</footer>
+    <footer>
+        &copy; 2025 WAVE - Tous droits réservés
+    </footer>
 
 </body>
+
 </html>
