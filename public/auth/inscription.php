@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Insertion dans la base 
             $sql = "INSERT INTO utilisateurs_wave (email, nom_utilisateur, age, mot_de_passe, role)
             VALUES (:email, :nom_utilisateur, :age, :mot_de_passe, 'user')";
-            
+
             try {
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindValue(':email', $email);
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $error = "Compte déjà existant.";
                     }
                 } else {
-                    throw $e; // autre erreur grave
+                    throw $e; 
                 }
             }
 

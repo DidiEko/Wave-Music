@@ -1,5 +1,7 @@
 <?php
+
 namespace Users;
+
 use Database;
 
 //Ce bout de code on l'a vue en classe dans le cours "2.1 - 02.01-bases-de-donnees-et-pdo-avance" 
@@ -35,6 +37,16 @@ class UserManager implements UserInterface
         return $users;
     }
 
+    public function getUserById(int $id): array|false
+    {
+        $sql = "SELECT * FROM utilisateurs_wave WHERE id = :id";
+        $stmt = $this->database->getPdo()->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
     public function addUser(User $user): int
     {
         // Définition de la requête SQL pour ajouter un utilisateur
@@ -55,9 +67,9 @@ class UserManager implements UserInterface
 
         // Lien avec les paramètres
         $stmt->bindValue(':email', $user->getEmail());
-        $stmt->bindValue(':nomUtilisateur', $user->getNom_utilisateur());
+        $stmt->bindValue(':nom_utilisateur', $user->getNom_utilisateur());
         $stmt->bindValue(':age', $user->getAge());
-        $stmt->bindValue(':motDePasse', $user->getMot_de_passe());
+        $stmt->bindValue(':mot_de_passe', $user->getMot_de_passe());
 
         // Exécution de la requête SQL pour ajouter un utilisateur
         $stmt->execute();
@@ -83,15 +95,21 @@ class UserManager implements UserInterface
         // Exécution de la requête SQL pour supprimer un utilisateur
         return $stmt->execute();
     }
-    
-    public function updatePassword(int $id, string $nouveauMotDePasse): bool {
-    $sql = "UPDATE utilisateurs_wave SET mot_de_passe = :mot_de_passe WHERE id = :id";
 
-    $stmt = $this->database->getPdo()->prepare($sql);
-    $stmt->bindValue(':mot_de_passe', $nouveauMotDePasse); 
-    $stmt->bindValue(':id', $id);
 
-    return $stmt->execute();
-}
+    public function updatePassword(int $id, string $nouveauMotDePasse): bool
+    {
+        $mot_de_passe_hash = password_hash($nouveauMotDePasse, PASSWORD_DEFAULT);
+        $sql = "UPDATE utilisateurs_wave 
+            SET mot_de_passe = :mot_de_passe 
+            WHERE id = :id";
 
+        $stmt = $this->database->getPdo()->prepare($sql);
+
+        // ✅ 3. On stocke le HASH, pas le mot de passe en clair
+        $stmt->bindValue(':mot_de_passe', $mot_de_passe_hash);
+        $stmt->bindValue(':id', $id);
+
+        return $stmt->execute();
+    }
 }
